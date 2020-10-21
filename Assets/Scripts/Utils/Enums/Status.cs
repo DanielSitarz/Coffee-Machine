@@ -1,4 +1,4 @@
-namespace Machine
+namespace Machine.Enums
 {
     public enum Status
     {

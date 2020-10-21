@@ -1,4 +1,4 @@
-﻿using Machine.Utils;
+﻿using Machine.Events;
 using UnityEngine;
 
 namespace Machine.Component
@@ -6,9 +6,6 @@ namespace Machine.Component
     [ExecuteInEditMode, RequireComponent(typeof(ContainerSensor))]
     public class Container : MonoBehaviour
     {
-        public ContainerSensor Sensor { get { return Sensor; } }
-        private ContainerSensor sensor;
-
         [SerializeField, Header("Capacity and Amount in grams."), Min(0)]
         private float maxCapacity;
 
@@ -17,6 +14,9 @@ namespace Machine.Component
 
         public FloatEvent OnAmountChange;
         public FloatEvent OnAmount01Change; // Normalized to 0..1
+
+        public ContainerSensor Sensor { get { return Sensor; } }
+        private ContainerSensor sensor;
 
         public float MaxCapacity { get { return maxCapacity; } }
         public float CurrentAmount { get { return currentAmount; } set { SetAmount(value); } }
@@ -38,13 +38,9 @@ namespace Machine.Component
             SendEvents();
         }
 
-        public bool Fill(float amountToTake)
+        public void Fill(float amountToAdd)
         {
-            bool willOverflowContainer = currentAmount + amountToTake > maxCapacity;
-
-            CurrentAmount += amountToTake;
-
-            return willOverflowContainer;
+            CurrentAmount += amountToAdd;
         }
 
         public float Take(float amountToTake)

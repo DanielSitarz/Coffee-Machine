@@ -1,18 +1,20 @@
+using Machine.Enums;
 using UnityEngine;
 
 namespace Machine.Component
 {
     public class Supplier : MonoBehaviour
     {
+        [Header("Takes from container. Fills other container with leftovers.")]
         public float processingAmountPerSecond = 10.0f;
-        public float leftoutAmountPerGram = 1.0f;
-
-        public Status Status { get { return GetStatus(); } }
+        public float leftoverAmountPerGram = 1.0f;
 
         [SerializeField] private Container container;
-        [SerializeField] private Container leftoutContainer;
+        [SerializeField] private Container leftoverContainer;
 
         private float amountToProcessLeft = 0.0f;
+
+        public Status Status { get { return amountToProcessLeft > 0 ? Status.Busy : Status.Idle; } }
 
         void Update()
         {
@@ -34,23 +36,14 @@ namespace Machine.Component
 
         private void Process()
         {
-            float grindedAmount = processingAmountPerSecond * Time.deltaTime;
-            float takenAmountFromContainer = container.Take(grindedAmount);
-            float leftoutsAmount = takenAmountFromContainer * leftoutAmountPerGram;
+            float processedAmount = processingAmountPerSecond * Time.deltaTime;
+            float takenAmountFromContainer = container.Take(processedAmount);
+            float leftoverAmount = takenAmountFromContainer * leftoverAmountPerGram;
 
-            leftoutContainer.Fill(leftoutsAmount);
+            if (leftoverContainer != null)
+                leftoverContainer.Fill(leftoverAmount);
 
             amountToProcessLeft -= takenAmountFromContainer;
-        }
-
-        private Status GetStatus()
-        {
-            if (amountToProcessLeft > 0)
-            {
-                return Status.Busy;
-            }
-
-            return Status.Idle;
         }
     }
 }

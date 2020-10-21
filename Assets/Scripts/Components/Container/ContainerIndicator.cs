@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Utils;
+using Machine.Utils;
 
-namespace CoffeeMachine
+namespace Machine.Component
 {
     [ExecuteInEditMode]
     public class ContainerIndicator : MonoBehaviour
@@ -15,14 +15,14 @@ namespace CoffeeMachine
         {
             if (containerToObserve == null) { return; }
 
-            containerToObserve.OnAmountPercentChange.AddListener(OnAmountPercentChange);
+            containerToObserve.OnAmount01Change.AddListener(OnAmountPercentChange);
         }
 
         void OnDisable()
         {
             if (containerToObserve == null) { return; }
 
-            containerToObserve.OnAmountPercentChange.RemoveListener(OnAmountPercentChange);
+            containerToObserve.OnAmount01Change.RemoveListener(OnAmountPercentChange);
         }
 
         public void OnAmountPercentChange(float value)

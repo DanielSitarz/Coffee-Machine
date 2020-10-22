@@ -6,11 +6,10 @@ namespace Machine.Components
     {
         float MaxCapacity { get; }
         float CurrentAmount { get; set; }
-        float CurrentPercentAmount { get; }
+        float Current01Amount { get; }
 
         void Fill(float amount);
-        void Take(float amount);
-
-        FloatEvent OnAmountPercentChange { get; set; }
+        float Take(float amount);
+        void SetAmount(float amount);
     }
 }

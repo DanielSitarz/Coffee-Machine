@@ -17,9 +17,15 @@ namespace Machine.Components
             display.DisplayStatus(newStatus);
         }
 
-        public override void OnWarning(Warning warning)
+        public override void OnWarnings(Warning[] warnings)
         {
-            display.DisplayWarning(warning);
+            if (warnings.Length == 0)
+            {
+                ClearWarnings();
+                return;
+            }
+
+            display.DisplayWarning(warnings[0]);
         }
 
         private void ClearWarnings()

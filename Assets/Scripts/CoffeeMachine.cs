@@ -1,70 +1,83 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Machine.Components;
 using Machine.Enums;
+using Machine.Events;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 namespace Machine
 {
     public class CoffeeMachine : MonoBehaviour
     {
-        [SerializeField] private ControlPanel controlPanel;
-
         [SerializeField] private Supplier waterPump;
         [SerializeField] private Supplier coffeeGrinder;
 
-        [SerializeField] private ContainerSensor dripLevelSensor;
-        [SerializeField] private ContainerSensor groundsLevelSensor;
-        [SerializeField] private ContainerSensor waterLevelSensor;
-        [SerializeField] private ContainerSensor coffeeLevelSensor;
+        public UnityEvent OnTurnOn;
+        public UnityEvent OnTurnOff;
+
+        public StatusEvent OnStatusChange;
 
         private Status status = Status.Off;
-
-        private bool hasWarnings = false;
-
-        void Start()
-        {
-            if (controlPanel == null) throw new Exception($"Attach Control Panel to Coffee Machine ({name}) first.");
-        }
+        private Warning warning = Warning.None;
 
         void OnDisable()
         {
-            TurnOff();
+            TryToTurnOff();
         }
 
         public void ToggleOnOff()
         {
-            if (status == Status.Off) TurnOn(); else TurnOff();
+            if (status == Status.Off) TurnOn(); else TryToTurnOff();
         }
 
         public void StartBrew()
         {
-            if (status != Status.Idle) return;
-            if (hasWarnings) return;
+            if (status != Status.Idle || warning != Warning.None) return;
 
             SetStatus(Status.Busy);
 
             StartCoroutine(Brew());
         }
 
+        public void OnWarnings(Warning[] warnings)
+        {
+            if (warnings.Length == 0)
+            {
+                warning = Warning.None;
+                return;
+            }
+
+            warning = warnings[0];
+
+            StopBrewing();
+        }
+
         private void TurnOn()
         {
+            OnTurnOn.Invoke();
+
             SetStatus(Status.Idle);
         }
 
-        private void TurnOff()
+        private void TryToTurnOff()
         {
             switch (status)
             {
                 case Status.Idle:
-                    SetStatus(Status.Off);
+                    TurnOff();
                     break;
                 case Status.Busy:
                     StopBrewing();
                     TurnOff();
                     break;
             }
+        }
+
+        private void TurnOff()
+        {
+            OnTurnOff.Invoke();
+
+            SetStatus(Status.Off);
         }
 
         private IEnumerator Brew()
@@ -77,11 +90,13 @@ namespace Machine
 
             yield return new WaitUntil(() => waterPump.Status == Status.Idle);
 
-            StopBrewing();
+            SetStatus(Status.Idle);
         }
 
         private void StopBrewing()
         {
+            StopCoroutine(Brew());
+
             coffeeGrinder.StopProcessing();
             waterPump.StopProcessing();
 
@@ -91,44 +106,7 @@ namespace Machine
         private void SetStatus(Status newStatus)
         {
             status = newStatus;
-        }
-
-        private void CheckWarnings()
-        {
-            Warning warning;
-
-            if (waterLevelSensor.Status == SensorStatus.Low)
-            {
-                warning = Warning.LowOnWater;
-            }
-
-            if (coffeeLevelSensor.Status == SensorStatus.Low)
-            {
-                warning = Warning.LowOnBeans;
-            }
-
-            if (groundsLevelSensor.Status == SensorStatus.High)
-            {
-                warning = Warning.GroundsContainerFull;
-            }
-
-            if (dripLevelSensor.Status == SensorStatus.High)
-            {
-                warning = Warning.DripTrayFull;
-            }
-
-            // if (warning != null)
-            // {
-            //     hasWarnings = true;
-
-            //     controlPanel.OnWarning(warning);
-            //     OnWarnings(warning);
-            // }
-        }
-
-        private void OnWarnings(Warning warning)
-        {
-            if (status == Status.Busy) StopBrewing();
+            OnStatusChange.Invoke(status);
         }
     }
 }

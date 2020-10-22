@@ -1077,7 +1077,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6290084241189157992}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33acb78a9851f374db9032c161293ef9, type: 3}
+  m_Script: {fileID: 11500000, guid: a811d21042184294c96c795b860dc453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 200
@@ -1103,7 +1103,36 @@ MonoBehaviour:
   observedContainer: {fileID: 6290084241189157993}
   lowLevelThreshold: 0
   highLevelThreshold: 80
+  sensorStatusToWarning:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 02000000
+    _keys: 02000000
+    _values: 04000000
   OnStatusChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWarning:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6290084241217131176
@@ -1147,7 +1176,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6290084241217131176}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33acb78a9851f374db9032c161293ef9, type: 3}
+  m_Script: {fileID: 11500000, guid: a811d21042184294c96c795b860dc453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 250
@@ -1173,7 +1202,36 @@ MonoBehaviour:
   observedContainer: {fileID: 6290084241217131174}
   lowLevelThreshold: 0
   highLevelThreshold: 90
+  sensorStatusToWarning:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 00000000
+    _keys: 00000000
+    _values: 02000000
   OnStatusChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWarning:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6290084241465496216
@@ -1224,13 +1282,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8217ef058f8865f44ae76a1da0be2d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlPanel: {fileID: 4523790989238369727}
   waterPump: {fileID: 8403001593816719645}
   coffeeGrinder: {fileID: 2600433848246200538}
-  dripLevelSensor: {fileID: 4623137439095527140}
-  groundsLevelSensor: {fileID: 6487203895360710576}
-  waterLevelSensor: {fileID: 2752307628362900939}
-  coffeeLevelSensor: {fileID: 5150306823862384982}
+  OnTurnOn:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1800725350}
+        m_MethodName: TurnOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTurnOff:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1800725350}
+        m_MethodName: TurnOff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnStatusChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4523790989238369727}
+        m_MethodName: OnStatusChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1800725350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1240,9 +1335,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 6290084241465496216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc0c75460ef0c534ebeb858f4eff12e7, type: 3}
+  m_Script: {fileID: 11500000, guid: d6a3b75be23b82544ba47c8bcd740df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkFrequency: 10
+  sensors:
+  - {fileID: 5150306823862384982}
+  - {fileID: 4623137439095527140}
+  - {fileID: 6487203895360710576}
+  - {fileID: 2752307628362900939}
+  OnWarnings:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6290084241465496217}
+        m_MethodName: OnWarnings
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4523790989238369727}
+        m_MethodName: OnWarnings
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4523790989238369727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1276,7 +1402,7 @@ MonoBehaviour:
       draggable: 1
       expandable: 1
       multipleSelection: 1
-      isExpanded: 0
+      isExpanded: 1
       label:
         m_Text: Keys
         m_Image: {fileID: 0}
@@ -1291,7 +1417,7 @@ MonoBehaviour:
       elementNameOverride: 
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
-    isExpanded: 0
+    isExpanded: 1
     _keyValues: 000000000100000002000000
     _keys: 000000000100000002000000
     _values:
@@ -1305,7 +1431,7 @@ MonoBehaviour:
       draggable: 1
       expandable: 1
       multipleSelection: 1
-      isExpanded: 0
+      isExpanded: 1
       label:
         m_Text: Keys
         m_Image: {fileID: 0}
@@ -1320,9 +1446,9 @@ MonoBehaviour:
       elementNameOverride: 
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 00000000010000000200000003000000
-    _keys: 00000000010000000200000003000000
+    isExpanded: 1
+    _keyValues: 01000000020000000300000004000000
+    _keys: 01000000020000000300000004000000
     _values:
     - Refill water.
     - Refill coffee.
@@ -1400,11 +1526,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6290084241798472338}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33acb78a9851f374db9032c161293ef9, type: 3}
+  m_Script: {fileID: 11500000, guid: a811d21042184294c96c795b860dc453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 1000
-  currentAmount: 392.61
+  currentAmount: 565.56
   OnAmountChange:
     m_PersistentCalls:
       m_Calls: []
@@ -1426,7 +1552,36 @@ MonoBehaviour:
   observedContainer: {fileID: 6290084241798472336}
   lowLevelThreshold: 10
   highLevelThreshold: 90
+  sensorStatusToWarning:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: 00000000
+    _keys: 00000000
+    _values: 01000000
   OnStatusChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWarning:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6290084241884835362
@@ -1470,7 +1625,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6290084241884835362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33acb78a9851f374db9032c161293ef9, type: 3}
+  m_Script: {fileID: 11500000, guid: a811d21042184294c96c795b860dc453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 250
@@ -1496,7 +1651,36 @@ MonoBehaviour:
   observedContainer: {fileID: 6290084241884835363}
   lowLevelThreshold: 0
   highLevelThreshold: 80
+  sensorStatusToWarning:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 02000000
+    _keys: 02000000
+    _values: 03000000
   OnStatusChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWarning:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6290084242537032825
@@ -2169,7 +2353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   processingAmountPerSecond: 100
-  leftoverAmountPerGram: 0.01
+  leftoverAmountPerGram: 0.1
   container: {fileID: 6290084241798472336}
   leftoverContainer: {fileID: 6290084241884835363}
 --- !u!1 &8818253635599014506
@@ -2413,7 +2597,7 @@ PrefabInstance:
         type: 3}
       propertyPath: containerToObserve
       value: 
-      objectReference: {fileID: 6290084241217131174}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f53fa61d21aec24280451455082785d, type: 3}
 --- !u!224 &7149546607612071365 stripped
@@ -2562,12 +2746,12 @@ PrefabInstance:
     - target: {fileID: 3779246352755876205, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Take
+      value: SetAmount
       objectReference: {fileID: 0}
     - target: {fileID: 3779246352755876205, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3779246352755876205, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
@@ -2663,7 +2847,7 @@ PrefabInstance:
         type: 3}
       propertyPath: containerToObserve
       value: 
-      objectReference: {fileID: 6290084241189157993}
+      objectReference: {fileID: 0}
     - target: {fileID: 6063550641127242560, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_Enabled
@@ -2817,12 +3001,12 @@ PrefabInstance:
     - target: {fileID: 3779246352755876205, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Take
+      value: SetAmount
       objectReference: {fileID: 0}
     - target: {fileID: 3779246352755876205, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3779246352755876205, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
@@ -2918,7 +3102,7 @@ PrefabInstance:
         type: 3}
       propertyPath: containerToObserve
       value: 
-      objectReference: {fileID: 6290084241884835363}
+      objectReference: {fileID: 0}
     - target: {fileID: 6063550641127242560, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_Enabled
@@ -3073,7 +3257,7 @@ PrefabInstance:
         type: 3}
       propertyPath: containerToObserve
       value: 
-      objectReference: {fileID: 6290084241798472336}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f53fa61d21aec24280451455082785d, type: 3}
 --- !u!224 &6290084242435054015 stripped

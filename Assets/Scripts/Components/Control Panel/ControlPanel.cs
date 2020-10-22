@@ -6,6 +6,6 @@ namespace Machine.Components
     public abstract class ControlPanel : MonoBehaviour, IControlPanel
     {
         public abstract void OnStatusChange(Status newStatus);
-        public abstract void OnWarning(Warning warning);
+        public abstract void OnWarnings(Warning[] warnings);
     }
 }

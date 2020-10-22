@@ -1,6 +1,6 @@
 using Machine.Enums;
 
-namespace Machine.Component
+namespace Machine.Components
 {
     public interface IControlPanel
     {

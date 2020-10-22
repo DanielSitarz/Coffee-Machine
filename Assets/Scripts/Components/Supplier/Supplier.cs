@@ -1,7 +1,7 @@
 using Machine.Enums;
 using UnityEngine;
 
-namespace Machine.Component
+namespace Machine.Components
 {
     public class Supplier : MonoBehaviour
     {

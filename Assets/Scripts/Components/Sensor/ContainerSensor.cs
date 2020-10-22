@@ -1,10 +1,8 @@
-using System;
-using Machine.Dictionaries;
 using Machine.Enums;
 using Machine.Events;
 using UnityEngine;
 
-namespace Machine.Component
+namespace Machine.Components
 {
     public class ContainerSensor : MonoBehaviour
     {
@@ -16,10 +14,7 @@ namespace Machine.Component
         [SerializeField, Range(0, 100)] private float lowLevelThreshold = 10;
         [SerializeField, Range(0, 100)] private float highLevelThreshold = 90;
 
-        public SensorStatusWarningDictionary sensorStatusToWarning;
-
         public SensorStatusEvent OnStatusChange;
-        public SingleWarningEvent OnWarning;
 
         void OnEnable()
         {
@@ -34,34 +29,22 @@ namespace Machine.Component
 
         private void UpdateStatus(float value01)
         {
-            float value = value01 * 100f;
+            float percent = value01 * 100f;
 
-            switch (value)
+            switch (percent)
             {
-                case float _ when value <= lowLevelThreshold:
+                case float _ when percent <= lowLevelThreshold:
                     status = SensorStatus.Low;
                     break;
-                case float _ when value > lowLevelThreshold && value < highLevelThreshold:
+                case float _ when percent > lowLevelThreshold && percent < highLevelThreshold:
                     status = SensorStatus.Normal;
                     break;
-                case float _ when value >= highLevelThreshold:
+                case float _ when percent >= highLevelThreshold:
                     status = SensorStatus.High;
                     break;
             }
 
             OnStatusChange.Invoke(status);
-            CheckWarning(status);
-        }
-
-        private void CheckWarning(SensorStatus status)
-        {
-            Warning warning;
-            bool hasWarningForThisStatus = sensorStatusToWarning.TryGetValue(status, out warning);
-
-            if (hasWarningForThisStatus)
-            {
-                OnWarning.Invoke(warning);
-            }
         }
     }
 }

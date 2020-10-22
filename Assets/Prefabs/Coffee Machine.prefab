@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 2377791749173473800}
   - component: {fileID: 3732669030772540821}
   m_Layer: 5
-  m_Name: Status Text
+  m_Name: Display Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1103,36 +1103,7 @@ MonoBehaviour:
   observedContainer: {fileID: 6290084241189157993}
   lowLevelThreshold: 0
   highLevelThreshold: 80
-  sensorStatusToWarning:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 1
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 1
-    _keyValues: 02000000
-    _keys: 02000000
-    _values: 03000000
   OnStatusChange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWarning:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6290084241217131176
@@ -1202,36 +1173,7 @@ MonoBehaviour:
   observedContainer: {fileID: 6290084241217131174}
   lowLevelThreshold: 0
   highLevelThreshold: 90
-  sensorStatusToWarning:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 1
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 1
-    _keyValues: 00000000
-    _keys: 00000000
-    _values: 01000000
   OnStatusChange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWarning:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6290084241465496216
@@ -1244,6 +1186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6290084241465496214}
   - component: {fileID: 6290084241465496217}
+  - component: {fileID: 1800725350}
   - component: {fileID: 4523790989238369727}
   - component: {fileID: 3042060244934679269}
   m_Layer: 0
@@ -1287,12 +1230,19 @@ MonoBehaviour:
   dripLevelSensor: {fileID: 4623137439095527140}
   groundsLevelSensor: {fileID: 6487203895360710576}
   waterLevelSensor: {fileID: 2752307628362900939}
-  OnStatusChange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWarningsHappen:
-    m_PersistentCalls:
-      m_Calls: []
+  coffeeLevelSensor: {fileID: 5150306823862384982}
+--- !u!114 &1800725350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290084241465496216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0c75460ef0c534ebeb858f4eff12e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4523790989238369727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1318,7 +1268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f377b496b90ab214a9b3b3a7c16a1fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messages:
+  displayText: {fileID: 3732669030772540821}
+  statusMessages:
     reorderableList:
       canAdd: 1
       canRemove: 1
@@ -1347,7 +1298,36 @@ MonoBehaviour:
     - 
     - Ready to make damn good coffee.
     - Making coffee.
-  displayText: {fileID: 3732669030772540821}
+  warningMessages:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: 00000000010000000200000003000000
+    _keys: 00000000010000000200000003000000
+    _values:
+    - Refill water.
+    - Refill coffee.
+    - Empty drip tray.
+    - Empty grounds.
 --- !u!1 &6290084241738415090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1424,7 +1404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 1000
-  currentAmount: 873.12
+  currentAmount: 392.61
   OnAmountChange:
     m_PersistentCalls:
       m_Calls: []
@@ -1446,36 +1426,7 @@ MonoBehaviour:
   observedContainer: {fileID: 6290084241798472336}
   lowLevelThreshold: 10
   highLevelThreshold: 90
-  sensorStatusToWarning:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 1
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 1
-    _keyValues: 00000000
-    _keys: 00000000
-    _values: 00000000
   OnStatusChange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWarning:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6290084241884835362
@@ -1545,36 +1496,7 @@ MonoBehaviour:
   observedContainer: {fileID: 6290084241884835363}
   lowLevelThreshold: 0
   highLevelThreshold: 80
-  sensorStatusToWarning:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 1
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-    reqReferences: {fileID: 0}
-    isExpanded: 1
-    _keyValues: 02000000
-    _keys: 02000000
-    _values: 02000000
   OnStatusChange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWarning:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6290084242537032825
@@ -3140,7 +3062,7 @@ PrefabInstance:
     - target: {fileID: 3779246353443738888, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_FillAmount
-      value: 0.87312
+      value: 0.39260998
       objectReference: {fileID: 0}
     - target: {fileID: 3779246353443738889, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}

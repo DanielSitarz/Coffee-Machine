@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Machine.Events;
 
-namespace Machine.Component
+namespace Machine.Components
 {
     [ExecuteInEditMode]
     public class ContainerIndicator : MonoBehaviour

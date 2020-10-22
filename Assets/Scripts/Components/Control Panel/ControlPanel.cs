@@ -1,7 +1,7 @@
 ﻿using Machine.Enums;
 using UnityEngine;
 
-namespace Machine.Component
+namespace Machine.Components
 {
     public abstract class ControlPanel : MonoBehaviour, IControlPanel
     {

@@ -1,7 +1,7 @@
 ﻿using Machine.Events;
 using UnityEngine;
 
-namespace Machine.Component
+namespace Machine.Components
 {
     [ExecuteInEditMode, RequireComponent(typeof(ContainerSensor))]
     public class Container : MonoBehaviour

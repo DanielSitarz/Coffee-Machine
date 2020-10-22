@@ -1,6 +1,6 @@
 using Machine.Events;
 
-namespace Machine.Component
+namespace Machine.Components
 {
     public interface IContainer
     {

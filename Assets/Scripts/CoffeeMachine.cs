@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using Machine.Component;
+using Machine.Components;
 using Machine.Enums;
-using Machine.Events;
 using UnityEngine;
 
 
@@ -19,13 +17,11 @@ namespace Machine
         [SerializeField] private ContainerSensor dripLevelSensor;
         [SerializeField] private ContainerSensor groundsLevelSensor;
         [SerializeField] private ContainerSensor waterLevelSensor;
+        [SerializeField] private ContainerSensor coffeeLevelSensor;
 
         private Status status = Status.Off;
 
         private bool hasWarnings = false;
-
-        public StatusEvent OnStatusChange;
-        public SingleWarningEvent OnWarningHappen;
 
         void Start()
         {
@@ -52,23 +48,8 @@ namespace Machine
             StartCoroutine(Brew());
         }
 
-        private IEnumerator Brew()
-        {
-            coffeeGrinder.StartProcessing(12);
-
-            yield return new WaitUntil(() => coffeeGrinder.Status == Status.Idle);
-
-            waterPump.StartProcessing(100);
-
-            yield return new WaitUntil(() => waterPump.Status == Status.Idle);
-
-            StopBrewing();
-        }
-
         private void TurnOn()
         {
-            SetupEvents();
-
             SetStatus(Status.Idle);
         }
 
@@ -84,8 +65,19 @@ namespace Machine
                     TurnOff();
                     break;
             }
+        }
 
-            RemoveEvents();
+        private IEnumerator Brew()
+        {
+            coffeeGrinder.StartProcessing(12);
+
+            yield return new WaitUntil(() => coffeeGrinder.Status == Status.Idle);
+
+            waterPump.StartProcessing(100);
+
+            yield return new WaitUntil(() => waterPump.Status == Status.Idle);
+
+            StopBrewing();
         }
 
         private void StopBrewing()
@@ -96,46 +88,45 @@ namespace Machine
             SetStatus(Status.Idle);
         }
 
-        private void SetupEvents()
-        {
-            OnStatusChange.AddListener(controlPanel.OnStatusChange);
-            OnWarningHappen.AddListener(controlPanel.OnWarning);
-
-            groundsLevelSensor.OnWarning.AddListener(ListenForWarnings);
-            waterLevelSensor.OnWarning.AddListener(ListenForWarnings);
-            dripLevelSensor.OnWarning.AddListener(ListenForWarnings);
-        }
-
-        private void RemoveEvents()
-        {
-            OnStatusChange.RemoveAllListeners();
-            OnWarningHappen.RemoveAllListeners();
-
-            groundsLevelSensor.OnWarning.RemoveListener(ListenForWarnings);
-            waterLevelSensor.OnWarning.RemoveListener(ListenForWarnings);
-            dripLevelSensor.OnWarning.RemoveListener(ListenForWarnings);
-        }
-
         private void SetStatus(Status newStatus)
         {
             status = newStatus;
-            OnStatusChange.Invoke(status);
         }
 
-        private void ListenForWarnings(Warning warning)
+        private void CheckWarnings()
         {
-            Debug.Log(warning);
-            hasWarnings = true;
+            Warning warning;
 
-            OnWarningHappen.Invoke(warning);
+            if (waterLevelSensor.Status == SensorStatus.Low)
+            {
+                warning = Warning.LowOnWater;
+            }
 
-            // if (hasWarnings)
+            if (coffeeLevelSensor.Status == SensorStatus.Low)
+            {
+                warning = Warning.LowOnBeans;
+            }
+
+            if (groundsLevelSensor.Status == SensorStatus.High)
+            {
+                warning = Warning.GroundsContainerFull;
+            }
+
+            if (dripLevelSensor.Status == SensorStatus.High)
+            {
+                warning = Warning.DripTrayFull;
+            }
+
+            // if (warning != null)
             // {
-            //     OnWarnings(warnings);
+            //     hasWarnings = true;
+
+            //     controlPanel.OnWarning(warning);
+            //     OnWarnings(warning);
             // }
         }
 
-        private void OnWarnings(List<Warning> warnings)
+        private void OnWarnings(Warning warning)
         {
             if (status == Status.Busy) StopBrewing();
         }

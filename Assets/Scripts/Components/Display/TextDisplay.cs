@@ -1,5 +1,6 @@
 ﻿using Machine.Dictionaries;
 using Machine.Enums;
+using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,25 +8,40 @@ namespace Machine
 {
     public class TextDisplay : Display
     {
-        public StatusStringDictionary messages = new StatusStringDictionary() {
+        [SerializeField] private Text displayText;
+
+        [SerializeField]
+        private StatusStringDictionary statusMessages = new StatusStringDictionary() {
             { Status.Off, "" },
             { Status.Idle, "Ready to make damn good coffee." },
             { Status.Busy, "Making coffee." }
         };
 
-        [SerializeField] private Text displayText;
+        [SerializeField]
+        private WarningStringDictionary warningMessages = new WarningStringDictionary()
+        {
+            {Warning.LowOnWater, "Refill water."},
+            {Warning.LowOnBeans, "Refill coffee."},
+            {Warning.DripTrayFull, "Empty drip tray."},
+            {Warning.GroundsContainerFull, "Empty grounds."},
+        };
 
         public override void DisplayWarning(Warning warning)
         {
-            displayText.text = warning.ToString();
+            DisplayMsg<Warning, WarningStringDictionary>(warning, warningMessages);
         }
 
         public override void DisplayStatus(Status status)
         {
-            string message = "";
-            bool hasMsg = messages.TryGetValue(status, out message);
+            DisplayMsg<Status, StatusStringDictionary>(status, statusMessages);
+        }
 
-            if (!hasMsg) Debug.LogError($"No msg for {status} in {name}.");
+        private void DisplayMsg<T, D>(T key, D dict) where D : SerializableDictionaryBase<T, string>
+        {
+            string message = "";
+            bool hasMsg = dict.TryGetValue(key, out message);
+
+            if (!hasMsg) Debug.LogWarning($"No msg for {key} in {name}.");
 
             displayText.text = message;
         }

@@ -1530,7 +1530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 1000
-  currentAmount: 565.56
+  currentAmount: 459.1
   OnAmountChange:
     m_PersistentCalls:
       m_Calls: []
@@ -2597,7 +2597,7 @@ PrefabInstance:
         type: 3}
       propertyPath: containerToObserve
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6290084241217131174}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f53fa61d21aec24280451455082785d, type: 3}
 --- !u!224 &7149546607612071365 stripped
@@ -2742,7 +2742,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6290084241884835363}
+      objectReference: {fileID: 6290084241189157993}
     - target: {fileID: 3779246352755876205, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -2847,7 +2847,7 @@ PrefabInstance:
         type: 3}
       propertyPath: containerToObserve
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6290084241189157993}
     - target: {fileID: 6063550641127242560, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_Enabled
@@ -3102,7 +3102,7 @@ PrefabInstance:
         type: 3}
       propertyPath: containerToObserve
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6290084241884835363}
     - target: {fileID: 6063550641127242560, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_Enabled
@@ -3246,7 +3246,7 @@ PrefabInstance:
     - target: {fileID: 3779246353443738888, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_FillAmount
-      value: 0.39260998
+      value: 0.4591
       objectReference: {fileID: 0}
     - target: {fileID: 3779246353443738889, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
@@ -3257,7 +3257,7 @@ PrefabInstance:
         type: 3}
       propertyPath: containerToObserve
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6290084241798472336}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f53fa61d21aec24280451455082785d, type: 3}
 --- !u!224 &6290084242435054015 stripped

@@ -1,4 +1,4 @@
-namespace Machine.Components
+namespace Machine.Enums
 {
     public enum ContainerSensorStatus
     {

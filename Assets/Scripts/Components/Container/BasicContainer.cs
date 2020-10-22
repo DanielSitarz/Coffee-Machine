@@ -1,5 +1,4 @@
-﻿using Machine.Events;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Machine.Components
 {

@@ -7,7 +7,9 @@ namespace Machine
     {
         public string id;
         public string coffeeName;
-        public float coffeeAmount;
-        public float waterAmount;
+        [Tooltip("In grams.")]
+        public int coffeeAmount;
+        [Tooltip("In milliliters.")]
+        public int waterAmount;
     }
 }

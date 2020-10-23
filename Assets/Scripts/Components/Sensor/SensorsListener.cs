@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace Machine.Components
 {
-    public class SensorsListener : MonoBehaviour
+    // TODO: Change from pooling sensors every x seconds to be event driven.
+    public class SensorsListener : MonoBehaviour, ITurnable
     {
         [Header("Times per second.")]
         public float checkFrequency = 10;

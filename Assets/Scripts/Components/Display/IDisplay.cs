@@ -6,5 +6,7 @@ namespace Machine
     {
         void DisplayWarning(Warning warning);
         void DisplayStatus(Status status);
+        void DisplayTimedMsg(string msg);
+        void ClearTimedMsg();
     }
 }

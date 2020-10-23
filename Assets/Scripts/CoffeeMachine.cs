@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Machine.Components;
 using Machine.Enums;
 using Machine.Events;
@@ -9,8 +10,10 @@ namespace Machine
 {
     public class CoffeeMachine : MonoBehaviour
     {
-        [SerializeField] private Supplier waterPump;
+        public bool debug;
+
         [SerializeField] private Supplier coffeeGrinder;
+        [SerializeField] private Supplier waterPump;
 
         public UnityEvent OnTurnOn;
         public UnityEvent OnTurnOff;
@@ -18,7 +21,6 @@ namespace Machine
         public StatusEvent OnStatusChange;
 
         private Status status = Status.Off;
-        private Warning warning = Warning.None;
 
         void OnDisable()
         {
@@ -30,33 +32,17 @@ namespace Machine
             if (status == Status.Off) TurnOn(); else TryToTurnOff();
         }
 
-        public void StartBrew()
+        public void StartBrew(Coffee coffeeToBrew)
         {
-            if (status != Status.Idle || warning != Warning.None) return;
-
-            SetStatus(Status.Busy);
-
-            StartCoroutine(Brew());
-        }
-
-        public void OnWarnings(Warning[] warnings)
-        {
-            if (warnings.Length == 0)
+            if (status != Status.Idle)
             {
-                warning = Warning.None;
+                Debug.LogWarning($"Can't brew because machine is {status}");
                 return;
             }
 
-            warning = warnings[0];
+            SetStatus(Status.Busy);
 
-            StopBrewing();
-        }
-
-        private void TurnOn()
-        {
-            OnTurnOn.Invoke();
-
-            SetStatus(Status.Idle);
+            StartCoroutine(Brew(coffeeToBrew));
         }
 
         private void TryToTurnOff()
@@ -73,40 +59,60 @@ namespace Machine
             }
         }
 
+        private void TurnOn()
+        {
+            OnTurnOn.Invoke();
+
+            SetStatus(Status.Idle);
+
+            Utils.DebugLog(this, "Turn on", debug);
+        }
+
         private void TurnOff()
         {
             OnTurnOff.Invoke();
 
             SetStatus(Status.Off);
+
+            Utils.DebugLog(this, "Turn on", debug);
         }
 
-        private IEnumerator Brew()
+        private IEnumerator Brew(Coffee coffeeToBrew)
         {
-            coffeeGrinder.StartProcessing(12);
+            Utils.DebugLog(this, $"Brewing {coffeeToBrew}", debug);
+            Utils.DebugLog(this, $"{coffeeToBrew.coffeeAmount}", debug);
+            Utils.DebugLog(this, $"{coffeeToBrew.waterAmount}", debug);
+
+            coffeeGrinder.StartProcessing(coffeeToBrew.coffeeAmount);
 
             yield return new WaitUntil(() => coffeeGrinder.Status == Status.Idle);
 
-            waterPump.StartProcessing(100);
+            waterPump.StartProcessing(coffeeToBrew.waterAmount);
 
             yield return new WaitUntil(() => waterPump.Status == Status.Idle);
 
             SetStatus(Status.Idle);
         }
 
-        private void StopBrewing()
+        public void StopBrewing()
         {
-            StopCoroutine(Brew());
+            if (status != Status.Busy) return;
+
+            StopCoroutine("Brew");
 
             coffeeGrinder.StopProcessing();
             waterPump.StopProcessing();
 
             SetStatus(Status.Idle);
+
+            Utils.DebugLog(this, $"Stopped brewing", debug);
         }
 
         private void SetStatus(Status newStatus)
         {
             status = newStatus;
             OnStatusChange.Invoke(status);
+            Utils.DebugLog(this, $"Changed status - {newStatus}", debug);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Machine.Dictionaries;
+﻿using System;
+using Machine.Dictionaries;
 using Machine.Enums;
 using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
@@ -8,7 +9,10 @@ namespace Machine
 {
     public class TextDisplay : Display
     {
-        [SerializeField] private Text displayText;
+        [SerializeField]
+        private Text displayText;
+        [Tooltip("In seconds.")]
+        public float timedMsgDuration = 2.0f;
 
         [SerializeField]
         private StatusStringDictionary statusMessages = new StatusStringDictionary() {
@@ -26,24 +30,73 @@ namespace Machine
             {Warning.GroundsContainerFull, "Empty grounds."},
         };
 
+        private float timedMsgEndTime = 0;
+        private string timedMsg;
+        private string statusMsg;
+        private string warningMsg;
+
+        void Update()
+        {
+            if (status == Status.Off) return;
+
+            if (Time.time < timedMsgEndTime)
+            {
+                displayText.text = timedMsg;
+            }
+            else
+            {
+                if (warningMsg != null)
+                {
+                    displayText.text = warningMsg;
+                }
+                else
+                {
+                    displayText.text = statusMsg;
+                }
+            }
+        }
+
+        public override void TurnOff()
+        {
+            base.TurnOff();
+            ClearDisplay();
+        }
+
         public override void DisplayWarning(Warning warning)
         {
-            DisplayMsg<Warning, WarningStringDictionary>(warning, warningMessages);
+            this.warningMsg = GetMsg<Warning, WarningStringDictionary>(warning, warningMessages);
         }
 
         public override void DisplayStatus(Status status)
         {
-            DisplayMsg<Status, StatusStringDictionary>(status, statusMessages);
+            this.statusMsg = GetMsg<Status, StatusStringDictionary>(status, statusMessages);
         }
 
-        private void DisplayMsg<T, D>(T key, D dict) where D : SerializableDictionaryBase<T, string>
+        public override void DisplayTimedMsg(string msg)
+        {
+            timedMsg = msg;
+            timedMsgEndTime = Time.time + timedMsgDuration;
+        }
+
+        public override void ClearTimedMsg()
+        {
+            timedMsg = "";
+            timedMsgEndTime = 0;
+        }
+
+        private string GetMsg<T, D>(T key, D dict) where D : SerializableDictionaryBase<T, string>
         {
             string message = "";
             bool hasMsg = dict.TryGetValue(key, out message);
 
             if (!hasMsg) Debug.LogWarning($"No msg for {key} in {name}.");
 
-            displayText.text = message;
+            return message;
+        }
+
+        private void ClearDisplay()
+        {
+            displayText.text = "";
         }
     }
 }

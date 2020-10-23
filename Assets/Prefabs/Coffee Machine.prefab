@@ -466,7 +466,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1868058381111957005}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4523790989238369727}
+        m_MethodName: ChangeCoffeeSize
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3105133180276458902
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,8 +661,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6290084241465496217}
-        m_MethodName: StartBrew
+      - m_Target: {fileID: 4523790989238369727}
+        m_MethodName: Brew
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1081,7 +1092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 200
-  currentAmount: 0
+  currentAmount: 70
   OnAmountChange:
     m_PersistentCalls:
       m_Calls: []
@@ -1180,7 +1191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 250
-  currentAmount: 250
+  currentAmount: 200
   OnAmountChange:
     m_PersistentCalls:
       m_Calls: []
@@ -1244,8 +1255,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6290084241465496214}
   - component: {fileID: 6290084241465496217}
-  - component: {fileID: 1800725350}
   - component: {fileID: 4523790989238369727}
+  - component: {fileID: 1800725350}
   - component: {fileID: 3042060244934679269}
   m_Layer: 0
   m_Name: Coffee Machine
@@ -1282,50 +1293,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8217ef058f8865f44ae76a1da0be2d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterPump: {fileID: 8403001593816719645}
+  debug: 0
   coffeeGrinder: {fileID: 2600433848246200538}
+  waterPump: {fileID: 8403001593816719645}
   OnTurnOn:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1800725350}
-        m_MethodName: TurnOn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnTurnOff:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1800725350}
-        m_MethodName: TurnOff
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnStatusChange:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4523790989238369727}
-        m_MethodName: OnStatusChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &4523790989238369727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290084241465496216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d926112f9008e440aa2f00a7a3eca1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 0
+  coffeeMachine: {fileID: 6290084241465496217}
+  sensorsListener: {fileID: 1800725350}
+  display: {fileID: 3042060244934679269}
+  defaultCoffee: {fileID: 11400000, guid: 5afb07349ea961240b3319549c011405, type: 2}
+  coffeeAmountPerPower:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: 000000000100000002000000
+    _keys: 000000000100000002000000
+    _values: 080000000c00000010000000
+  waterAmountPerSize:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: 000000000100000002000000
+    _keys: 000000000100000002000000
+    _values: 5000000078000000a0000000
+  coffeePower: 1
+  coffeeSize: 2
 --- !u!114 &1800725350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1338,7 +1388,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6a3b75be23b82544ba47c8bcd740df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkFrequency: 10
+  checkFrequency: 6
   sensors:
   - {fileID: 5150306823862384982}
   - {fileID: 4623137439095527140}
@@ -1346,42 +1396,7 @@ MonoBehaviour:
   - {fileID: 2752307628362900939}
   OnWarnings:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6290084241465496217}
-        m_MethodName: OnWarnings
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4523790989238369727}
-        m_MethodName: OnWarnings
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &4523790989238369727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6290084241465496216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79633c07cc428e4ab81bd3d8191c556, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  display: {fileID: 3042060244934679269}
+      m_Calls: []
 --- !u!114 &3042060244934679269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1395,6 +1410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayText: {fileID: 3732669030772540821}
+  timedMsgDuration: 2
   statusMessages:
     reorderableList:
       canAdd: 1
@@ -1530,7 +1546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 1000
-  currentAmount: 459.1
+  currentAmount: 500
   OnAmountChange:
     m_PersistentCalls:
       m_Calls: []
@@ -1559,7 +1575,7 @@ MonoBehaviour:
       draggable: 1
       expandable: 1
       multipleSelection: 1
-      isExpanded: 0
+      isExpanded: 1
       label:
         m_Text: Keys
         m_Image: {fileID: 0}
@@ -1574,7 +1590,7 @@ MonoBehaviour:
       elementNameOverride: 
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
-    isExpanded: 0
+    isExpanded: 1
     _keyValues: 00000000
     _keys: 00000000
     _values: 01000000
@@ -1629,7 +1645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxCapacity: 250
-  currentAmount: 0
+  currentAmount: 50
   OnAmountChange:
     m_PersistentCalls:
       m_Calls: []
@@ -2308,7 +2324,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5206010744603555303}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4523790989238369727}
+        m_MethodName: ChangeCoffeePower
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8622874093054540170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2591,7 +2618,7 @@ PrefabInstance:
     - target: {fileID: 3779246353443738888, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_FillAmount
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 6063550641127242560, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
@@ -2796,7 +2823,7 @@ PrefabInstance:
     - target: {fileID: 3779246353443738888, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_FillAmount
-      value: 0
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 3779246353443738890, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
@@ -3051,7 +3078,7 @@ PrefabInstance:
     - target: {fileID: 3779246353443738888, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_FillAmount
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3779246353443738890, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
@@ -3246,7 +3273,7 @@ PrefabInstance:
     - target: {fileID: 3779246353443738888, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}
       propertyPath: m_FillAmount
-      value: 0.4591
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3779246353443738889, guid: 4f53fa61d21aec24280451455082785d,
         type: 3}

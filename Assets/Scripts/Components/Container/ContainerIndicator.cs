@@ -13,14 +13,14 @@ namespace Machine.Components
 
         void OnEnable()
         {
-            if (containerToObserve == null) { return; }
+            if (containerToObserve == null) return;
 
             containerToObserve.OnAmount01Change.AddListener(OnAmountPercentChange);
         }
 
         void OnDisable()
         {
-            if (containerToObserve == null) { return; }
+            if (containerToObserve == null) return;
 
             containerToObserve.OnAmount01Change.RemoveListener(OnAmountPercentChange);
         }

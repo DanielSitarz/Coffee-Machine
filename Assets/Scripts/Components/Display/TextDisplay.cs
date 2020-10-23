@@ -1,5 +1,4 @@
-﻿using System;
-using Machine.Dictionaries;
+﻿using Machine.Dictionaries;
 using Machine.Enums;
 using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
@@ -64,11 +63,15 @@ namespace Machine
 
         public override void DisplayWarning(Warning warning)
         {
+            if (status == Status.Off) return;
+
             this.warningMsg = GetMsg<Warning, WarningStringDictionary>(warning, warningMessages);
         }
 
         public override void DisplayStatus(Status status)
         {
+            if (status == Status.Off) return;
+
             this.statusMsg = GetMsg<Status, StatusStringDictionary>(status, statusMessages);
         }
 

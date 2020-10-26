@@ -12,6 +12,9 @@ namespace Machine
     {
         public bool debug;
 
+        public Status Status { get { return status; } }
+        private Status status = Status.Off;
+
         [SerializeField] private Supplier coffeeGrinder;
         [SerializeField] private Supplier waterPump;
 
@@ -19,8 +22,9 @@ namespace Machine
         public UnityEvent OnTurnOff;
 
         public StatusEvent OnStatusChange;
+        [HideInInspector] public CoffeeEvent OnBrewSuccess;
 
-        private Status status = Status.Off;
+        private Coroutine brewingProcess;
 
         void OnDisable()
         {
@@ -30,6 +34,8 @@ namespace Machine
         public void ToggleOnOff()
         {
             if (status == Status.Off) TurnOn(); else TryToTurnOff();
+
+            Utils.DebugLog(this, "Toggle on/off", debug);
         }
 
         public void StartBrew(Coffee coffeeToBrew)
@@ -42,7 +48,7 @@ namespace Machine
 
             SetStatus(Status.Busy);
 
-            StartCoroutine(Brew(coffeeToBrew));
+            brewingProcess = StartCoroutine(Brew(coffeeToBrew));
         }
 
         private void TryToTurnOff()
@@ -74,7 +80,7 @@ namespace Machine
 
             SetStatus(Status.Off);
 
-            Utils.DebugLog(this, "Turn on", debug);
+            Utils.DebugLog(this, "Turn off", debug);
         }
 
         private IEnumerator Brew(Coffee coffeeToBrew)
@@ -91,14 +97,15 @@ namespace Machine
 
             yield return new WaitUntil(() => waterPump.Status == Status.Idle);
 
+            OnBrewSuccess.Invoke(coffeeToBrew);
             SetStatus(Status.Idle);
         }
 
         public void StopBrewing()
         {
-            if (status != Status.Busy) return;
+            if (status != Status.Busy || brewingProcess == null) return;
 
-            StopCoroutine("Brew");
+            StopCoroutine(brewingProcess);
 
             coffeeGrinder.StopProcessing();
             waterPump.StopProcessing();

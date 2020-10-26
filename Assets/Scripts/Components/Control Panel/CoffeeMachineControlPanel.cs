@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Machine.Components
 {
+    // TODO: Move power, size, coffee success texts to display.
     public class CoffeeMachineControlPanel : ControlPanel
     {
         public CoffeeMachine coffeeMachine;
@@ -40,6 +41,11 @@ namespace Machine.Components
         private Status oldStatus = Status.Off;
         private bool hasWarnings = false;
 
+        private bool Operational
+        {
+            get { return coffeeMachine.Status == Status.Idle; }
+        }
+
         void Start()
         {
             currentCoffee = Instantiate(defaultCoffee);
@@ -50,6 +56,7 @@ namespace Machine.Components
             coffeeMachine.OnTurnOn.AddListener(TurnOn);
             coffeeMachine.OnTurnOff.AddListener(TurnOff);
             coffeeMachine.OnStatusChange.AddListener(OnStatusChange);
+            coffeeMachine.OnBrewSuccess.AddListener(OnBrewSuccess);
         }
 
         void OnDisable()
@@ -57,6 +64,7 @@ namespace Machine.Components
             coffeeMachine.OnTurnOn.RemoveListener(TurnOn);
             coffeeMachine.OnTurnOff.RemoveListener(TurnOff);
             coffeeMachine.OnStatusChange.RemoveListener(OnStatusChange);
+            coffeeMachine.OnBrewSuccess.RemoveListener(OnBrewSuccess);
         }
 
         void OnValidate()
@@ -104,6 +112,8 @@ namespace Machine.Components
 
         public void ChangeCoffeePower()
         {
+            if (!Operational) return;
+
             coffeePower = Utils.ToggleNumber(coffeePower + 1, coffeeAmountPerPower.Count - 1);
 
             SetCoffeePower(coffeePower);
@@ -111,12 +121,14 @@ namespace Machine.Components
 
         public void ChangeCoffeeSize()
         {
+            if (!Operational) return;
+
             coffeeSize = Utils.ToggleNumber(coffeeSize + 1, waterAmountPerSize.Count - 1);
 
             SetCoffeeSize(coffeeSize);
         }
 
-        public override void OnStatusChange(Status newStatus)
+        protected override void OnStatusChange(Status newStatus)
         {
             if (oldStatus == newStatus) return;
 
@@ -127,7 +139,7 @@ namespace Machine.Components
             Utils.DebugLog(this, $"Status changes - {newStatus}", debug);
         }
 
-        public override void OnWarnings(Warning[] warnings)
+        protected override void OnWarnings(Warning[] warnings)
         {
             if (warnings.Length == 0)
             {
@@ -142,9 +154,14 @@ namespace Machine.Components
             display.DisplayWarning(warnings[0]);
         }
 
+        private void OnBrewSuccess(Coffee coffee)
+        {
+            display.DisplayTimedMsg("Coffee ready.");
+        }
+
         private void SetCoffeePower(int power)
         {
-            currentCoffee.coffeeAmount = Utils.TryGetValueWithDefault(coffeeAmountPerPower, power, defaultCoffee.coffeeAmount);
+            currentCoffee.coffeeAmount = Utils.TryGetValueOrDefault(coffeeAmountPerPower, power, defaultCoffee.coffeeAmount);
 
             display.DisplayTimedMsg($"Coffee power: {power}.");
 
@@ -153,7 +170,7 @@ namespace Machine.Components
 
         private void SetCoffeeSize(int size)
         {
-            currentCoffee.waterAmount = Utils.TryGetValueWithDefault(waterAmountPerSize, size, defaultCoffee.waterAmount);
+            currentCoffee.waterAmount = Utils.TryGetValueOrDefault(waterAmountPerSize, size, defaultCoffee.waterAmount);
 
             display.DisplayTimedMsg($"Coffee size: {size}.");
 

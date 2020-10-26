@@ -15,13 +15,13 @@ namespace Machine
             return num;
         }
 
-        public static T TryGetValueWithDefault<T, D>(D dict, T key, T defaultVal) where D : SerializableDictionaryBase<T, T>
+        public static T TryGetValueOrDefault<T, D>(D dict, T key, T defaultVal) where D : SerializableDictionaryBase<T, T>
         {
             T val;
 
-            bool knowsAmount = dict.TryGetValue(key, out val);
+            bool dictValue = dict.TryGetValue(key, out val);
 
-            if (!knowsAmount)
+            if (!dictValue)
             {
                 val = defaultVal;
             }

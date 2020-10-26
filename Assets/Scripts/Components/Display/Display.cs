@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Machine
 {
-    public abstract class Display : MonoBehaviour, IDisplay, ITurnable
+    public abstract class Display : MonoBehaviour, ITurnable
     {
         public Status status;
 

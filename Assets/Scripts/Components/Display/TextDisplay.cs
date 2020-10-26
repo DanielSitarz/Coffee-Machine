@@ -92,7 +92,7 @@ namespace Machine
             string message = "";
             bool hasMsg = dict.TryGetValue(key, out message);
 
-            if (!hasMsg) Debug.LogWarning($"No msg for {key} in {name}.");
+            if (!hasMsg) Debug.LogWarning($"No msg for key: {key}.");
 
             return message;
         }

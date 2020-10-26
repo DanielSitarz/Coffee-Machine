@@ -1032,6 +1032,7 @@ MonoBehaviour:
     _keyValues: 000000000100000002000000
     _keys: 000000000100000002000000
     _values: 080000000c00000010000000
+  coffeePower: 1
   waterAmountPerSize:
     reorderableList:
       canAdd: 1
@@ -1058,7 +1059,6 @@ MonoBehaviour:
     _keyValues: 000000000100000002000000
     _keys: 000000000100000002000000
     _values: 5000000078000000a0000000
-  coffeePower: 1
   coffeeSize: 2
   OnStatusChange:
     m_PersistentCalls:

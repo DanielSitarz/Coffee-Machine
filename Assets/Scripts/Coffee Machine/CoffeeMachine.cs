@@ -10,13 +10,13 @@ namespace Machine.Components
     {
         public bool debug = false;
 
-        [SerializeField]
+        [SerializeField, Tooltip("Handles coffee brewing process.")]
         private BrewModule brewModule;
-        [SerializeField]
+        [SerializeField, Tooltip("Used to react to warnings. Not required.")]
         private SensorsListener sensorsListener;
-        [SerializeField]
+        [SerializeField, Tooltip("Handles status/warning events and other.")]
         private Display display;
-        [SerializeField, Space()]
+        [SerializeField]
         private Coffee defaultCoffee;
 
         [SerializeField, Space()]
@@ -25,17 +25,16 @@ namespace Machine.Components
             {1, 12},
             {2, 16},
         };
+        [SerializeField, Tooltip("Current power, limited by entries in dictionary.")]
+        private int coffeePower = 1;
 
-        [SerializeField]
+        [SerializeField, Space()]
         private IntIntDictionary waterAmountPerSize = new IntIntDictionary() {
             {0, 80},
             {1, 120},
             {2, 160},
         };
-
-        [SerializeField, Space()]
-        private int coffeePower = 1;
-        [SerializeField]
+        [SerializeField, Tooltip("Current size, limited by entires in dictionary.")]
         private int coffeeSize = 2;
 
         public StatusEvent OnStatusChange;
@@ -89,13 +88,13 @@ namespace Machine.Components
 
         public void TurnOff()
         {
-            DisableEvents();
-
             if (sensorsListener != null) sensorsListener.TurnOff();
             brewModule.TurnOff();
             display.TurnOff();
 
             SetStatus(Status.Off);
+
+            DisableEvents();
 
             Utils.DebugLog(this, "Turn off", debug);
         }
@@ -129,21 +128,6 @@ namespace Machine.Components
             SetCoffeeSize(coffeeSize);
         }
 
-        protected void OnWarnings(Warning[] warnings)
-        {
-            if (warnings.Length == 0)
-            {
-                if (hasWarnings) ClearWarnings();
-                return;
-            }
-
-            hasWarnings = true;
-
-            brewModule.StopBrewing();
-
-            display.DisplayWarning(warnings[0]);
-        }
-
         private void EnableEvents()
         {
             if (sensorsListener != null) sensorsListener.OnWarnings.AddListener(OnWarnings);
@@ -158,6 +142,21 @@ namespace Machine.Components
             brewModule.OnStatusChange.RemoveListener(SetStatus);
             brewModule.OnBrewSuccess.RemoveListener(OnBrewSuccess);
             OnStatusChange.RemoveListener(display.DisplayStatus);
+        }
+
+        private void OnWarnings(Warning[] warnings)
+        {
+            if (warnings.Length == 0)
+            {
+                if (hasWarnings) ClearWarnings();
+                return;
+            }
+
+            hasWarnings = true;
+
+            brewModule.StopBrewing();
+
+            display.DisplayWarning(warnings[0]);
         }
 
         private void OnBrewSuccess(Coffee coffee)

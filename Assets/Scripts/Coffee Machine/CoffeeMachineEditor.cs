@@ -8,19 +8,30 @@ public class CoffeeMachineEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        CoffeeMachine controlPanel = (CoffeeMachine)target;
+        CoffeeMachine machine = (CoffeeMachine)target;
 
         GUILayout.BeginHorizontal("controls");
-        if (GUILayout.Button("On"))
+        if (GUILayout.Button("On/Off"))
         {
-            controlPanel.TurnOn();
+            machine.ToggleOnOff();
         }
-        if (GUILayout.Button("On"))
+        if (GUILayout.Button("Brew Coffee"))
         {
-            controlPanel.TurnOff();
+            machine.Brew();
         }
-        if (GUILayout.Button("Brew Coffee")) { }
         GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal("settings");
+        if (GUILayout.Button("Power"))
+        {
+            machine.ChangeCoffeePower();
+        }
+        if (GUILayout.Button("Size"))
+        {
+            machine.ChangeCoffeeSize();
+        }
+        GUILayout.EndHorizontal();
+
         DrawDefaultInspector();
     }
 }

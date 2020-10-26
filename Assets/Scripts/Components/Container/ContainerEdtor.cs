@@ -8,7 +8,7 @@ public class ContainerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        BasicContainer container = (BasicContainer)target;
+        Container container = (Container)target;
 
         GUILayout.BeginHorizontal("buttons");
         if (GUILayout.Button("Fill Max"))

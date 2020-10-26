@@ -29,6 +29,7 @@ namespace Machine
             {Warning.GroundsContainerFull, "Empty grounds."},
         };
 
+        private Status currentStatus;
         private float timedMsgEndTime = 0;
         private string timedMsg;
         private string statusMsg;
@@ -70,7 +71,9 @@ namespace Machine
 
         public override void DisplayStatus(Status status)
         {
-            if (status == Status.Off) return;
+            if (status == Status.Off || currentStatus == status) return;
+
+            currentStatus = status;
 
             this.statusMsg = GetMsg<Status, StatusStringDictionary>(status, statusMessages);
         }

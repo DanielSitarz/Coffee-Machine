@@ -1,20 +1,21 @@
 ﻿using Machine.Dictionaries;
 using Machine.Enums;
+using Machine.Events;
 using UnityEngine;
 
 namespace Machine.Components
 {
     // TODO: Move power, size, coffee success texts to display.
-    public class CoffeeMachineControlPanel : ControlPanel
+    public class CoffeeMachine : MonoBehaviour, ITurnable
     {
-        public CoffeeMachine coffeeMachine;
+        public bool debug = false;
 
+        [SerializeField]
+        private BrewModule brewModule;
         [SerializeField]
         private SensorsListener sensorsListener;
-
         [SerializeField]
         private Display display;
-
         [SerializeField, Space()]
         private Coffee defaultCoffee;
 
@@ -37,13 +38,17 @@ namespace Machine.Components
         [SerializeField]
         private int coffeeSize = 2;
 
+        public StatusEvent OnStatusChange;
+
+        public Status Status { get { return status; } }
+        private Status status = Status.Off;
+
         private Coffee currentCoffee;
-        private Status oldStatus = Status.Off;
         private bool hasWarnings = false;
 
         private bool Operational
         {
-            get { return coffeeMachine.Status == Status.Idle; }
+            get { return brewModule.Status == Status.Idle; }
         }
 
         void Start()
@@ -51,20 +56,9 @@ namespace Machine.Components
             currentCoffee = Instantiate(defaultCoffee);
         }
 
-        void OnEnable()
-        {
-            coffeeMachine.OnTurnOn.AddListener(TurnOn);
-            coffeeMachine.OnTurnOff.AddListener(TurnOff);
-            coffeeMachine.OnStatusChange.AddListener(OnStatusChange);
-            coffeeMachine.OnBrewSuccess.AddListener(OnBrewSuccess);
-        }
-
         void OnDisable()
         {
-            coffeeMachine.OnTurnOn.RemoveListener(TurnOn);
-            coffeeMachine.OnTurnOff.RemoveListener(TurnOff);
-            coffeeMachine.OnStatusChange.RemoveListener(OnStatusChange);
-            coffeeMachine.OnBrewSuccess.RemoveListener(OnBrewSuccess);
+            TurnOff();
         }
 
         void OnValidate()
@@ -73,28 +67,35 @@ namespace Machine.Components
             coffeePower = Mathf.Clamp(coffeePower, 0, waterAmountPerSize.Count - 1);
         }
 
-        public override void TurnOn()
+        public void ToggleOnOff()
         {
-            if (sensorsListener != null)
-            {
-                sensorsListener.OnWarnings.AddListener(OnWarnings);
-                sensorsListener.TurnOn();
-            }
+            if (status == Status.Off) TurnOn(); else TurnOff();
 
+            Utils.DebugLog(this, "Toggle on/off", debug);
+        }
+
+        public void TurnOn()
+        {
+            EnableEvents();
+
+            if (sensorsListener != null) sensorsListener.TurnOn();
+            brewModule.TurnOn();
             display.TurnOn();
+
+            SetStatus(Status.Idle);
 
             Utils.DebugLog(this, "Turn on", debug);
         }
 
-        public override void TurnOff()
+        public void TurnOff()
         {
-            if (sensorsListener != null)
-            {
-                sensorsListener.OnWarnings.RemoveListener(OnWarnings);
-                sensorsListener.TurnOff();
-            }
+            DisableEvents();
 
+            if (sensorsListener != null) sensorsListener.TurnOff();
+            brewModule.TurnOff();
             display.TurnOff();
+
+            SetStatus(Status.Off);
 
             Utils.DebugLog(this, "Turn off", debug);
         }
@@ -105,7 +106,7 @@ namespace Machine.Components
 
             display.ClearTimedMsg();
 
-            coffeeMachine.StartBrew(currentCoffee);
+            brewModule.StartBrew(currentCoffee);
 
             Utils.DebugLog(this, "Brew", debug);
         }
@@ -128,18 +129,7 @@ namespace Machine.Components
             SetCoffeeSize(coffeeSize);
         }
 
-        protected override void OnStatusChange(Status newStatus)
-        {
-            if (oldStatus == newStatus) return;
-
-            oldStatus = newStatus;
-
-            display.DisplayStatus(newStatus);
-
-            Utils.DebugLog(this, $"Status changes - {newStatus}", debug);
-        }
-
-        protected override void OnWarnings(Warning[] warnings)
+        protected void OnWarnings(Warning[] warnings)
         {
             if (warnings.Length == 0)
             {
@@ -149,9 +139,25 @@ namespace Machine.Components
 
             hasWarnings = true;
 
-            coffeeMachine.StopBrewing();
+            brewModule.StopBrewing();
 
             display.DisplayWarning(warnings[0]);
+        }
+
+        private void EnableEvents()
+        {
+            if (sensorsListener != null) sensorsListener.OnWarnings.AddListener(OnWarnings);
+            brewModule.OnStatusChange.AddListener(SetStatus);
+            brewModule.OnBrewSuccess.AddListener(OnBrewSuccess);
+            OnStatusChange.AddListener(display.DisplayStatus);
+        }
+
+        private void DisableEvents()
+        {
+            if (sensorsListener != null) sensorsListener.OnWarnings.RemoveListener(OnWarnings);
+            brewModule.OnStatusChange.RemoveListener(SetStatus);
+            brewModule.OnBrewSuccess.RemoveListener(OnBrewSuccess);
+            OnStatusChange.RemoveListener(display.DisplayStatus);
         }
 
         private void OnBrewSuccess(Coffee coffee)
@@ -180,8 +186,17 @@ namespace Machine.Components
         private void ClearWarnings()
         {
             hasWarnings = false;
+
             display.ClearWarning();
-            // display.DisplayStatus(oldStatus);
+        }
+
+        private void SetStatus(Status newStatus)
+        {
+            status = newStatus;
+
+            OnStatusChange.Invoke(status);
+
+            Utils.DebugLog(this, $"Changed status - {newStatus}", debug);
         }
     }
 }

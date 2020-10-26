@@ -1,42 +1,29 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Machine.Components;
 using Machine.Enums;
 using Machine.Events;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Machine
 {
-    public class CoffeeMachine : MonoBehaviour
+    public class BrewModule : MonoBehaviour, ITurnable
     {
         public bool debug;
 
         public Status Status { get { return status; } }
         private Status status = Status.Off;
 
-        [SerializeField] private Supplier coffeeGrinder;
-        [SerializeField] private Supplier waterPump;
+        [SerializeField]
+        private Supplier coffeeGrinder;
+        [SerializeField]
+        private Supplier waterPump;
 
-        public UnityEvent OnTurnOn;
-        public UnityEvent OnTurnOff;
-
+        [HideInInspector]
+        public CoffeeEvent OnBrewSuccess;
+        [HideInInspector]
         public StatusEvent OnStatusChange;
-        [HideInInspector] public CoffeeEvent OnBrewSuccess;
 
         private Coroutine brewingProcess;
-
-        void OnDisable()
-        {
-            TryToTurnOff();
-        }
-
-        public void ToggleOnOff()
-        {
-            if (status == Status.Off) TurnOn(); else TryToTurnOff();
-
-            Utils.DebugLog(this, "Toggle on/off", debug);
-        }
 
         public void StartBrew(Coffee coffeeToBrew)
         {
@@ -51,32 +38,16 @@ namespace Machine
             brewingProcess = StartCoroutine(Brew(coffeeToBrew));
         }
 
-        private void TryToTurnOff()
+        public void TurnOn()
         {
-            switch (status)
-            {
-                case Status.Idle:
-                    TurnOff();
-                    break;
-                case Status.Busy:
-                    StopBrewing();
-                    TurnOff();
-                    break;
-            }
-        }
-
-        private void TurnOn()
-        {
-            OnTurnOn.Invoke();
-
             SetStatus(Status.Idle);
 
             Utils.DebugLog(this, "Turn on", debug);
         }
 
-        private void TurnOff()
+        public void TurnOff()
         {
-            OnTurnOff.Invoke();
+            StopBrewing();
 
             SetStatus(Status.Off);
 

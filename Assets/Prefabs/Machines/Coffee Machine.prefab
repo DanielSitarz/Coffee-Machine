@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 7162831782004411574}
   - component: {fileID: 2600433848246200538}
   m_Layer: 0
-  m_Name: CoffeeSupplier
+  m_Name: Coffee Grinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
   processingAmountPerSecond: 10
   ratio: 1.1
   from: {fileID: 6290084241217131174}
-  to: {fileID: 6290084241884835363}
+  to: {fileID: 6290084241189157993}
 --- !u!1 &2246890789039832595
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +570,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3584761533201935618}
   m_Layer: 5
-  m_Name: Status wrap (1)
+  m_Name: Status wrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -964,8 +964,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6290084241465496214}
-  - component: {fileID: 6290084241465496217}
   - component: {fileID: 5254204698062184924}
+  - component: {fileID: 6290084241465496217}
   m_Layer: 0
   m_Name: Coffee Machine
   m_TagString: Untagged
@@ -989,55 +989,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6290084241465496217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6290084241465496216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8217ef058f8865f44ae76a1da0be2d26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debug: 0
-  coffeeGrinder: {fileID: 2600433848246200538}
-  waterPump: {fileID: 8403001593816719645}
-  OnTurnOn:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 205996499600990847}
-        m_MethodName: TurnOn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnTurnOff:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 205996499600990847}
-        m_MethodName: TurnOff
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnStatusChange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnBrewSuccess:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5254204698062184924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1047,11 +998,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6290084241465496216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d926112f9008e440aa2f00a7a3eca1d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9929bea4fbc07164e956420baa561a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  coffeeMachine: {fileID: 6290084241465496217}
+  brewModule: {fileID: 6290084241465496217}
   sensorsListener: {fileID: 69192417349282526}
   display: {fileID: 8844148710152652160}
   defaultCoffee: {fileID: 11400000, guid: 5afb07349ea961240b3319549c011405, type: 2}
@@ -1109,6 +1060,41 @@ MonoBehaviour:
     _values: 5000000078000000a0000000
   coffeePower: 1
   coffeeSize: 2
+  OnStatusChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 205996499600990847}
+        m_MethodName: OnStatus
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6290084241465496217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290084241465496216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db74b4922e24c04fa40820ed7c5a9fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 0
+  coffeeGrinder: {fileID: 2600433848246200538}
+  waterPump: {fileID: 8403001593816719645}
+  OnBrewSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStatusChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6290084241738415090
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,7 +1335,7 @@ GameObject:
   - component: {fileID: 6290084242537032822}
   - component: {fileID: 6290084242537032823}
   m_Layer: 5
-  m_Name: Bottom - Leftovers
+  m_Name: Leftovers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1812,7 +1798,7 @@ GameObject:
   - component: {fileID: 1663974521407202602}
   - component: {fileID: 8403001593816719645}
   m_Layer: 0
-  m_Name: WaterSupplier
+  m_Name: Water Pump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1936,8 +1922,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 1936546719040543207}
-  onColor: {r: 0.22590885, g: 0.8679245, b: 0.08597365, a: 1}
-  offColor: {r: 0, g: 0, b: 0, a: 1}
+  statusToColor:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 1
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 1
+    _keyValues: 000000000100000002000000
+    _keys: 000000000100000002000000
+    _values:
+    - {r: 0, g: 0, b: 0, a: 1}
+    - {r: 0, g: 1, b: 0, a: 1}
+    - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &8818253635599014506
 GameObject:
   m_ObjectHideFlags: 0
@@ -3458,7 +3471,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6290084241465496217}
+      objectReference: {fileID: 5254204698062184924}
     - target: {fileID: 7066176024607411822, guid: eda025d0e22bd52429f3df814e6c5f93,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName

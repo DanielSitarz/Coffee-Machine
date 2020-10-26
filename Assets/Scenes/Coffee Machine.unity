@@ -394,18 +394,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1014886810 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6290084241189157993, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6290084241608572190}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a811d21042184294c96c795b860dc453, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1556490988
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,20 +530,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
+  status: 0
   coffeeGrinder: {fileID: 1562924980}
   waterPump: {fileID: 1787825573}
   OnTurnOn:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   OnTurnOff:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   OnStatusChange:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   OnBrewSuccess:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
 --- !u!4 &1556490991
 Transform:
   m_ObjectHideFlags: 0
@@ -857,11 +850,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2600433848246200538, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
-        type: 3}
-      propertyPath: to
-      value: 
-      objectReference: {fileID: 1014886810}
     - target: {fileID: 3584761533201935618, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1026,11 +1014,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Coffee Machine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6290084242537032825, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
-        type: 3}
-      propertyPath: m_Name
-      value: Leftovers
       objectReference: {fileID: 0}
     - target: {fileID: 6290084243090477651, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
         type: 3}

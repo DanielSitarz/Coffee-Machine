@@ -44,7 +44,7 @@ namespace Machine.Components
             float processedAmount = processingAmountPerSecond * Time.deltaTime;
             float takenAmountFromContainer = processedAmount;
 
-            if (from)
+            if (from != null)
             {
                 takenAmountFromContainer = from.Take(processedAmount);
 

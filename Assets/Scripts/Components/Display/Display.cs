@@ -11,6 +11,7 @@ namespace Machine
         public abstract void DisplayStatus(Status status);
         public abstract void DisplayTimedMsg(string msg);
         public abstract void ClearTimedMsg();
+        public abstract void ClearWarning();
 
         public virtual void TurnOn()
         {

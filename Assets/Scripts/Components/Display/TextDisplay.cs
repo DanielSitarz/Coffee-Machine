@@ -87,6 +87,11 @@ namespace Machine
             timedMsgEndTime = 0;
         }
 
+        public override void ClearWarning()
+        {
+            warningMsg = null;
+        }
+
         private string GetMsg<T, D>(T key, D dict) where D : SerializableDictionaryBase<T, string>
         {
             string message = "";

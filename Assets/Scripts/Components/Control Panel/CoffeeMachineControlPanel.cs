@@ -143,7 +143,7 @@ namespace Machine.Components
         {
             if (warnings.Length == 0)
             {
-                ClearWarnings();
+                if (hasWarnings) ClearWarnings();
                 return;
             }
 
@@ -180,7 +180,8 @@ namespace Machine.Components
         private void ClearWarnings()
         {
             hasWarnings = false;
-            display.DisplayStatus(oldStatus);
+            display.ClearWarning();
+            // display.DisplayStatus(oldStatus);
         }
     }
 }

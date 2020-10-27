@@ -1,12 +1,10 @@
-﻿using System;
-using Machine.Dictionaries;
+﻿using Machine.Dictionaries;
 using Machine.Enums;
 using Machine.Events;
 using UnityEngine;
 
 namespace Machine.Components
 {
-    // TODO: Move power, size, coffee success texts to display.
     public class CoffeeMachine : MonoBehaviour, ITurnable
     {
         public bool debug = false;
@@ -15,9 +13,12 @@ namespace Machine.Components
         private BrewModule brewModule;
         [SerializeField, Tooltip("Used to react to warnings. Not required.")]
         private SensorsListener sensorsListener;
+
         [SerializeField, Tooltip("Handles status/warning events and other.")]
         private Display display;
 
+        // From my research it turns out that Coffee Strength is controlled by the flow rate of the water (or temperature).
+        // The slower water goes through coffee, the stronger coffee is.
         [SerializeField, Space()]
         private CoffeeStrengthToFlowRateDictionary strengthToFlowRate = new CoffeeStrengthToFlowRateDictionary() {
             {CoffeeStrength.Weak, 120.0f},
@@ -38,6 +39,7 @@ namespace Machine.Components
         private CoffeeSize coffeeSize = CoffeeSize.Medium;
         private int coffeeSizeIndex;
 
+        public Coffee CurrentCoffee { get { return currentCoffee; } }
         private Coffee currentCoffee;
 
         public StatusEvent OnStatusChange;
@@ -45,12 +47,12 @@ namespace Machine.Components
         public Status Status { get { return status; } }
         private Status status = Status.Off;
 
-        private bool hasWarnings = false;
-
-        private bool Operational
+        public bool Operational
         {
-            get { return brewModule.Status == Status.Idle; }
+            get { return status == Status.Idle && brewModule.Status == Status.Idle; }
         }
+
+        private bool hasWarnings = false;
 
         void Start()
         {
@@ -111,6 +113,20 @@ namespace Machine.Components
             Utils.DebugLog(this, "Brew", debug);
         }
 
+        public void SetCoffee(Coffee coffee)
+        {
+            if (!Operational) return;
+            if (coffee == null)
+            {
+                Debug.LogWarning("Trying to select null coffee.");
+                return;
+            }
+
+            currentCoffee = coffee;
+
+            display.DisplayTimedMsg(DisplayMessage.SelectedCoffee, coffee.name);
+        }
+
         public void ChangeCoffeeStrength()
         {
             if (!Operational) return;
@@ -129,20 +145,30 @@ namespace Machine.Components
             SetCoffeeSize(coffeeSizeIndex);
         }
 
+        public void SetCoffeeStrength(CoffeeStrength strength)
+        {
+            SetCoffeeStrength((int)strength);
+        }
+
         private void SetCoffeeStrength(int index)
         {
             currentCoffee.strength = (CoffeeStrength)index;
 
-            display.DisplayTimedMsg($"Coffee power: {currentCoffee.strength}");
+            display.DisplayTimedMsg(DisplayMessage.SetCoffeeStrength, currentCoffee.strength.ToString());
 
-            Utils.DebugLog(this, "Change coffee power", debug);
+            Utils.DebugLog(this, "Change coffee strength", debug);
+        }
+
+        public void SetCoffeeSize(CoffeeSize size)
+        {
+            SetCoffeeSize((int)size);
         }
 
         private void SetCoffeeSize(int index)
         {
             currentCoffee.size = (CoffeeSize)index;
 
-            display.DisplayTimedMsg($"Coffee size: {currentCoffee.size}");
+            display.DisplayTimedMsg(DisplayMessage.SetCoffeeSize, currentCoffee.size.ToString());
 
             Utils.DebugLog(this, "Change coffee size", debug);
         }
@@ -155,6 +181,8 @@ namespace Machine.Components
                 waterFlowRate = strengthToFlowRate[currentCoffee.strength]
             };
         }
+
+        #region Events
 
         private void EnableEvents()
         {
@@ -187,17 +215,14 @@ namespace Machine.Components
             display.DisplayWarning(warnings[0]);
         }
 
-        private void ClearWarnings()
-        {
-            hasWarnings = false;
-
-            display.ClearWarning();
-        }
-
         private void OnBrewSuccess()
         {
-            display.DisplayTimedMsg($"{currentCoffee.size}&{currentCoffee.strength} coffee ready.");
+            string name = currentCoffee.name != null ? currentCoffee.name : $"{currentCoffee.size}&{currentCoffee.strength}";
+
+            display.DisplayTimedMsg(DisplayMessage.CoffeeReady, name);
         }
+
+        #endregion
 
         private void SetStatus(Status newStatus)
         {
@@ -206,6 +231,13 @@ namespace Machine.Components
             OnStatusChange.Invoke(status);
 
             Utils.DebugLog(this, $"Changed status - {newStatus}", debug);
+        }
+
+        private void ClearWarnings()
+        {
+            hasWarnings = false;
+
+            display.ClearWarning();
         }
     }
 }

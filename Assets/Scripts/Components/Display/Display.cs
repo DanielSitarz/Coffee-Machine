@@ -9,7 +9,7 @@ namespace Machine
 
         public abstract void DisplayWarning(Warning warning);
         public abstract void DisplayStatus(Status status);
-        public abstract void DisplayTimedMsg(string msg);
+        public abstract void DisplayTimedMsg(DisplayMessage msg, string additionalText);
         public abstract void ClearTimedMsg();
         public abstract void ClearWarning();
 

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Machine
 {
+    // TODO: I18n, propably texts should be moved to one localization file.
     public class TextDisplay : Display
     {
         [SerializeField]
@@ -27,6 +28,16 @@ namespace Machine
             {Warning.LowOnBeans, "Refill coffee."},
             {Warning.DripTrayFull, "Empty drip tray."},
             {Warning.GroundsContainerFull, "Empty grounds."},
+        };
+
+        [SerializeField]
+        private DisplayMessageDictionary messages = new DisplayMessageDictionary()
+        {
+            {DisplayMessage.SaveCoffeeAsFavorite, "Saved {0} as favorite."},
+            {DisplayMessage.SelectedCoffee, "Selected {0}"},
+            {DisplayMessage.SetCoffeeSize, "Coffee size: {0}"},
+            {DisplayMessage.SetCoffeeStrength, "Coffee strength: {0}"},
+            {DisplayMessage.CoffeeReady, "{0} coffee ready."},
         };
 
         private Status currentStatus;
@@ -78,9 +89,16 @@ namespace Machine
             this.statusMsg = GetMsg<Status, StatusStringDictionary>(status, statusMessages);
         }
 
-        public override void DisplayTimedMsg(string msg)
+        public override void DisplayTimedMsg(DisplayMessage msg, string additional)
         {
-            timedMsg = msg;
+            var text = GetMsg<DisplayMessage, DisplayMessageDictionary>(msg, messages);
+
+            if (additional != null)
+            {
+                text = string.Format(text, additional);
+            }
+
+            timedMsg = text;
             timedMsgEndTime = Time.time + timedMsgDuration;
         }
 
@@ -97,7 +115,7 @@ namespace Machine
 
         private string GetMsg<T, D>(T key, D dict) where D : SerializableDictionaryBase<T, string>
         {
-            string message = "";
+            string message = key.ToString();
             bool hasMsg = dict.TryGetValue(key, out message);
 
             if (!hasMsg) Debug.LogWarning($"No msg for key: {key}.");

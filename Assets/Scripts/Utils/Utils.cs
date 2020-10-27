@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
 
 namespace Machine
@@ -11,6 +10,11 @@ namespace Machine
             if (num > max)
             {
                 num = start;
+            }
+
+            if (num < start)
+            {
+                num = max;
             }
 
             return num;

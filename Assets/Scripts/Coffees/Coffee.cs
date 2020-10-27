@@ -1,15 +1,14 @@
-﻿using UnityEngine;
+﻿using Machine.Enums;
+using UnityEngine;
 
 namespace Machine
 {
     [CreateAssetMenu(fileName = "BasicCoffee", menuName = "Coffees/Basic", order = 1)]
     public class Coffee : ScriptableObject
     {
-        public string id;
-        public string coffeeName;
-        [Tooltip("In grams.")]
-        public int coffeeAmount;
-        [Tooltip("In milliliters.")]
-        public int waterAmount;
+        public string id = "0";
+        public string coffeeName = "Normal coffee";
+        public CoffeeStrength strength = CoffeeStrength.Normal;
+        public CoffeeSize size = CoffeeSize.Medium;
     }
 }

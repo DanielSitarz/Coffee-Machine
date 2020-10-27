@@ -24,7 +24,7 @@ public class CoffeeMachineEditor : Editor
         GUILayout.BeginHorizontal("settings");
         if (GUILayout.Button("Power"))
         {
-            machine.ChangeCoffeePower();
+            machine.ChangeCoffeeStrength();
         }
         if (GUILayout.Button("Size"))
         {

@@ -1,0 +1,53 @@
+﻿using Machine.Dictionaries;
+using Machine.Enums;
+using Machine.Events;
+using UnityEngine;
+using UnityEngine.Events;
+
+namespace Machine.Components
+{
+    public abstract class BrewModule : MonoBehaviour, ITurnable
+    {
+        public bool debug;
+
+        [SerializeField, Tooltip("Amount in grams used by this brew module.")]
+        protected float coffeeAmount = 12;
+
+        public Status Status { get { return status; } }
+        protected Status status = Status.Off;
+
+        [HideInInspector]
+        public UnityEvent OnBrewSuccess;
+        [HideInInspector]
+        public StatusEvent OnStatusChange;
+
+        private Coroutine brewingProcess;
+
+        public abstract void StartBrew(CoffeeMakeModel currentCoffeeModel);
+        public abstract void StopBrewing();
+
+        public virtual void TurnOn()
+        {
+            SetStatus(Status.Idle);
+
+            Utils.DebugLog(this, "Turn on", debug);
+        }
+
+        public virtual void TurnOff()
+        {
+            StopBrewing();
+
+            SetStatus(Status.Off);
+
+            Utils.DebugLog(this, "Turn off", debug);
+        }
+
+        protected virtual void SetStatus(Status newStatus)
+        {
+            status = newStatus;
+            OnStatusChange.Invoke(status);
+
+            Utils.DebugLog(this, $"Changed status - {newStatus}", debug);
+        }
+    }
+}

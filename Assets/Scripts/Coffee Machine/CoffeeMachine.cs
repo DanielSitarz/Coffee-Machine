@@ -1,4 +1,5 @@
-﻿using Machine.Dictionaries;
+﻿using System;
+using Machine.Dictionaries;
 using Machine.Enums;
 using Machine.Events;
 using UnityEngine;
@@ -16,33 +17,34 @@ namespace Machine.Components
         private SensorsListener sensorsListener;
         [SerializeField, Tooltip("Handles status/warning events and other.")]
         private Display display;
+
+        [SerializeField, Space()]
+        private CoffeeStrengthToFlowRateDictionary strengthToFlowRate = new CoffeeStrengthToFlowRateDictionary() {
+            {CoffeeStrength.Weak, 120.0f},
+            {CoffeeStrength.Normal, 100.0f},
+            {CoffeeStrength.Strong, 80.0f}
+        };
         [SerializeField]
-        private Coffee defaultCoffee;
+        private CoffeeStrength coffeeStrength = CoffeeStrength.Normal;
+        private int coffeeStrengthIndex;
 
         [SerializeField, Space()]
-        private IntIntDictionary coffeeAmountPerPower = new IntIntDictionary() {
-            {0, 8},
-            {1, 12},
-            {2, 16},
+        private CoffeeSizeToWaterAmountDictionary sizeToWaterAmount = new CoffeeSizeToWaterAmountDictionary() {
+            {CoffeeSize.Small, 40},
+            {CoffeeSize.Medium, 80},
+            {CoffeeSize.Big, 120}
         };
-        [SerializeField, Tooltip("Current power, limited by entries in dictionary.")]
-        private int coffeePower = 1;
+        [SerializeField]
+        private CoffeeSize coffeeSize = CoffeeSize.Medium;
+        private int coffeeSizeIndex;
 
-        [SerializeField, Space()]
-        private IntIntDictionary waterAmountPerSize = new IntIntDictionary() {
-            {0, 80},
-            {1, 120},
-            {2, 160},
-        };
-        [SerializeField, Tooltip("Current size, limited by entires in dictionary.")]
-        private int coffeeSize = 2;
+        private Coffee currentCoffee;
 
         public StatusEvent OnStatusChange;
 
         public Status Status { get { return status; } }
         private Status status = Status.Off;
 
-        private Coffee currentCoffee;
         private bool hasWarnings = false;
 
         private bool Operational
@@ -52,18 +54,12 @@ namespace Machine.Components
 
         void Start()
         {
-            currentCoffee = Instantiate(defaultCoffee);
+            currentCoffee = new Coffee();
         }
 
         void OnDisable()
         {
             TurnOff();
-        }
-
-        void OnValidate()
-        {
-            coffeeSize = Mathf.Clamp(coffeeSize, 0, coffeeAmountPerPower.Count - 1);
-            coffeePower = Mathf.Clamp(coffeePower, 0, waterAmountPerSize.Count - 1);
         }
 
         public void ToggleOnOff()
@@ -76,6 +72,9 @@ namespace Machine.Components
         public void TurnOn()
         {
             EnableEvents();
+
+            coffeeStrengthIndex = (int)coffeeStrength;
+            coffeeSizeIndex = (int)coffeeSize;
 
             if (sensorsListener != null) sensorsListener.TurnOn();
             brewModule.TurnOn();
@@ -105,27 +104,56 @@ namespace Machine.Components
 
             display.ClearTimedMsg();
 
-            brewModule.StartBrew(currentCoffee);
+            CoffeeMakeModel model = ConstructCoffeeMakeModel(currentCoffee);
+
+            brewModule.StartBrew(model);
 
             Utils.DebugLog(this, "Brew", debug);
         }
 
-        public void ChangeCoffeePower()
+        public void ChangeCoffeeStrength()
         {
             if (!Operational) return;
 
-            coffeePower = Utils.ToggleNumber(coffeePower + 1, coffeeAmountPerPower.Count - 1);
+            coffeeStrengthIndex = Utils.ToggleNumber(coffeeStrengthIndex + 1, strengthToFlowRate.Count - 1);
 
-            SetCoffeePower(coffeePower);
+            SetCoffeeStrength(coffeeStrengthIndex);
         }
 
         public void ChangeCoffeeSize()
         {
             if (!Operational) return;
 
-            coffeeSize = Utils.ToggleNumber(coffeeSize + 1, waterAmountPerSize.Count - 1);
+            coffeeSizeIndex = Utils.ToggleNumber(coffeeSizeIndex + 1, sizeToWaterAmount.Count - 1);
 
-            SetCoffeeSize(coffeeSize);
+            SetCoffeeSize(coffeeSizeIndex);
+        }
+
+        private void SetCoffeeStrength(int index)
+        {
+            currentCoffee.strength = (CoffeeStrength)index;
+
+            display.DisplayTimedMsg($"Coffee power: {currentCoffee.strength}");
+
+            Utils.DebugLog(this, "Change coffee power", debug);
+        }
+
+        private void SetCoffeeSize(int index)
+        {
+            currentCoffee.size = (CoffeeSize)index;
+
+            display.DisplayTimedMsg($"Coffee size: {currentCoffee.size}");
+
+            Utils.DebugLog(this, "Change coffee size", debug);
+        }
+
+        private CoffeeMakeModel ConstructCoffeeMakeModel(Coffee currentCoffee)
+        {
+            return new CoffeeMakeModel()
+            {
+                waterAmount = sizeToWaterAmount[currentCoffee.size],
+                waterFlowRate = strengthToFlowRate[currentCoffee.strength]
+            };
         }
 
         private void EnableEvents()
@@ -159,34 +187,16 @@ namespace Machine.Components
             display.DisplayWarning(warnings[0]);
         }
 
-        private void OnBrewSuccess(Coffee coffee)
-        {
-            display.DisplayTimedMsg("Coffee ready.");
-        }
-
-        private void SetCoffeePower(int power)
-        {
-            currentCoffee.coffeeAmount = Utils.TryGetValueOrDefault(coffeeAmountPerPower, power, defaultCoffee.coffeeAmount);
-
-            display.DisplayTimedMsg($"Coffee power: {power}.");
-
-            Utils.DebugLog(this, "Change coffee power", debug);
-        }
-
-        private void SetCoffeeSize(int size)
-        {
-            currentCoffee.waterAmount = Utils.TryGetValueOrDefault(waterAmountPerSize, size, defaultCoffee.waterAmount);
-
-            display.DisplayTimedMsg($"Coffee size: {size}.");
-
-            Utils.DebugLog(this, "Change coffee size", debug);
-        }
-
         private void ClearWarnings()
         {
             hasWarnings = false;
 
             display.ClearWarning();
+        }
+
+        private void OnBrewSuccess()
+        {
+            display.DisplayTimedMsg($"{currentCoffee.size}&{currentCoffee.strength} coffee ready.");
         }
 
         private void SetStatus(Status newStatus)

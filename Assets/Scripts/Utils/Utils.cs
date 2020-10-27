@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace Machine
             return num;
         }
 
-        public static T TryGetValueOrDefault<T, D>(D dict, T key, T defaultVal) where D : SerializableDictionaryBase<T, T>
+        public static T TryGetValueOrDefault<T, D>(D dict, T key, T defaultVal) where D : IDictionary<T, T>
         {
             T val;
 

@@ -112,10 +112,11 @@ namespace Machine.Components
                 return;
             }
 
+            SetCurrentCoffeeName();
+            SetStatus(Status.Busy);
             display.ClearTimedMsg();
 
             CoffeeMakeModel model = ConstructCoffeeMakeModel(currentCoffee);
-
             brewModule.StartBrew(model);
         }
 
@@ -131,9 +132,7 @@ namespace Machine.Components
             MyLog.TryLog(this, $"Set coffee - {coffee.coffeeName}", debug);
 
             currentCoffee = coffee;
-
             coffeeSetFromOutside = true;
-
             display.DisplayTimedMsg(DisplayMessage.SelectedCoffee, coffee.coffeeName);
         }
 
@@ -142,9 +141,7 @@ namespace Machine.Components
             if (!Operational) return;
 
             coffeeStrengthIndex = Utils.ToggleNumber(coffeeStrengthIndex + 1, strengthToFlowRate.Count - 1);
-
             SetCoffeeStrength(coffeeStrengthIndex);
-
             coffeeSetFromOutside = false;
 
             MyLog.TryLog(this, $"Changed coffee strength to {coffeeStrengthIndex}", debug);
@@ -155,9 +152,7 @@ namespace Machine.Components
             if (!Operational) return;
 
             coffeeSizeIndex = Utils.ToggleNumber(coffeeSizeIndex + 1, sizeToWaterAmount.Count - 1);
-
             SetCoffeeSize(coffeeSizeIndex);
-
             coffeeSetFromOutside = false;
 
             MyLog.TryLog(this, $"Changed coffee size to {coffeeSizeIndex}", debug);
@@ -206,7 +201,6 @@ namespace Machine.Components
         {
             if (sensorsListener != null) sensorsListener.OnWarnings.AddListener(OnWarnings);
             brewModule.OnBrewSuccess.AddListener(OnBrewSuccess);
-            OnStatusChange.AddListener(display.DisplayStatus);
 
             MyLog.TryLog(this, "Events enabled", debug);
         }
@@ -215,7 +209,6 @@ namespace Machine.Components
         {
             if (sensorsListener != null) sensorsListener.OnWarnings.RemoveListener(OnWarnings);
             brewModule.OnBrewSuccess.RemoveListener(OnBrewSuccess);
-            OnStatusChange.RemoveListener(display.DisplayStatus);
 
             MyLog.TryLog(this, "Events disabled", debug);
         }
@@ -231,7 +224,7 @@ namespace Machine.Components
             hasWarnings = true;
 
             brewModule.StopBrewing();
-
+            SetStatus(Status.Idle);
             display.DisplayWarning(warnings[0]);
 
             MyLog.TryLog(this, $"Got warning - {warnings[0]}", debug);
@@ -239,13 +232,9 @@ namespace Machine.Components
 
         private void OnBrewSuccess()
         {
-            string name = $"{currentCoffee.size}&{currentCoffee.strength}";
+            name = currentCoffee.coffeeName;
 
-            if (coffeeSetFromOutside)
-            {
-                name = currentCoffee.coffeeName;
-            }
-
+            SetStatus(Status.Idle);
             display.DisplayTimedMsg(DisplayMessage.CoffeeReady, name);
 
             MyLog.TryLog(this, $"Brew succeeded.", debug);
@@ -259,6 +248,8 @@ namespace Machine.Components
 
             OnStatusChange.Invoke(status);
 
+            display.DisplayStatus(status, currentCoffee.coffeeName);
+
             MyLog.TryLog(this, $"Changed status - {newStatus}", debug);
         }
 
@@ -269,6 +260,11 @@ namespace Machine.Components
             display.ClearWarning();
 
             MyLog.TryLog(this, $"Cleared warnings", debug);
+        }
+
+        private void SetCurrentCoffeeName()
+        {
+            if (!coffeeSetFromOutside) currentCoffee.coffeeName = $"{currentCoffee.size}&{currentCoffee.strength}";
         }
     }
 }

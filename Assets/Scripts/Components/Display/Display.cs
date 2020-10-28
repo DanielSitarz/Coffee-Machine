@@ -7,9 +7,9 @@ namespace Machine
     {
         public Status status;
 
-        public abstract void DisplayWarning(Warning warning);
-        public abstract void DisplayStatus(Status status);
-        public abstract void DisplayTimedMsg(DisplayMessage msg, string additionalText);
+        public abstract void DisplayWarning(Warning warning, string additionalText = null);
+        public abstract void DisplayStatus(Status status, string additionalText = null);
+        public abstract void DisplayTimedMsg(DisplayMessage msg, string additionalText = null);
         public abstract void ClearTimedMsg();
         public abstract void ClearWarning();
 

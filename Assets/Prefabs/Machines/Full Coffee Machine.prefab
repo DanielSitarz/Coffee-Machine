@@ -658,7 +658,7 @@ MonoBehaviour:
     _values:
     - 
     - Ready to make damn good coffee.
-    - Making coffee.
+    - Making {0} coffee.
   warningMessages:
     reorderableList:
       canAdd: 1

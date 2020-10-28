@@ -18,7 +18,7 @@ namespace Machine
         private StatusStringDictionary statusMessages = new StatusStringDictionary() {
             { Status.Off, "" },
             { Status.Idle, "Ready to make damn good coffee." },
-            { Status.Busy, "Making coffee..." }
+            { Status.Busy, "Making coffee {0}" }
         };
 
         [SerializeField]
@@ -73,30 +73,25 @@ namespace Machine
             ClearDisplay();
         }
 
-        public override void DisplayWarning(Warning warning)
+        public override void DisplayWarning(Warning warning, string additional = null)
         {
             if (status == Status.Off) return;
 
-            this.warningMsg = GetMsg<Warning, WarningStringDictionary>(warning, warningMessages);
+            this.warningMsg = GetMsg<Warning, WarningStringDictionary>(warning, warningMessages, additional);
         }
 
-        public override void DisplayStatus(Status status)
+        public override void DisplayStatus(Status status, string additional = null)
         {
             if (status == Status.Off || currentStatus == status) return;
 
             currentStatus = status;
 
-            this.statusMsg = GetMsg<Status, StatusStringDictionary>(status, statusMessages);
+            this.statusMsg = GetMsg<Status, StatusStringDictionary>(status, statusMessages, additional);
         }
 
-        public override void DisplayTimedMsg(DisplayMessage msg, string additional)
+        public override void DisplayTimedMsg(DisplayMessage msg, string additional = null)
         {
-            var text = GetMsg<DisplayMessage, DisplayMessageDictionary>(msg, messages);
-
-            if (additional != null)
-            {
-                text = string.Format(text, additional);
-            }
+            var text = GetMsg<DisplayMessage, DisplayMessageDictionary>(msg, messages, additional);
 
             timedMsg = text;
             timedMsgEndTime = Time.time + timedMsgDuration;
@@ -113,12 +108,14 @@ namespace Machine
             warningMsg = null;
         }
 
-        private string GetMsg<T, D>(T key, D dict) where D : SerializableDictionaryBase<T, string>
+        private string GetMsg<T, D>(T key, D dict, string additionalText) where D : SerializableDictionaryBase<T, string>
         {
             string message = key.ToString();
             bool hasMsg = dict.TryGetValue(key, out message);
 
             if (!hasMsg) Debug.LogWarning($"No msg for key: {key}.");
+
+            if (additionalText != null) message = string.Format(message, additionalText);
 
             return message;
         }

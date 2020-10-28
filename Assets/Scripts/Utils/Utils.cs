@@ -33,11 +33,5 @@ namespace Machine
 
             return val;
         }
-
-        public static void DebugLog(Object obj, string msg, bool debug = false)
-        {
-            if (!debug) return;
-            Debug.Log($"{obj.name} - {msg}");
-        }
     }
 }

@@ -1,4 +1,5 @@
 using Machine.Components;
+using Machine.Enums;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,10 +7,17 @@ using UnityEngine;
 [CanEditMultipleObjects]
 public class CoffeeMachineEditor : Editor
 {
-    public override void OnInspectorGUI()
+    CoffeeMachine machine;
+    Container[] containers;
+
+    void OnEnable()
     {
         CoffeeMachine machine = (CoffeeMachine)target;
+        containers = machine.GetComponentsInChildren<Container>();
+    }
 
+    public override void OnInspectorGUI()
+    {
         GUILayout.BeginHorizontal("controls");
         if (GUILayout.Button("On/Off"))
         {
@@ -22,16 +30,37 @@ public class CoffeeMachineEditor : Editor
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal("settings");
-        if (GUILayout.Button("Power"))
+        if (GUILayout.Button("Change Strength"))
         {
             machine.ChangeCoffeeStrength();
         }
-        if (GUILayout.Button("Size"))
+        if (GUILayout.Button("Change Size"))
         {
             machine.ChangeCoffeeSize();
         }
         GUILayout.EndHorizontal();
 
+        GUILayout.BeginHorizontal("containers");
+        if (GUILayout.Button("Fill all containers"))
+        {
+            FillAllContainers();
+        }
+        if (GUILayout.Button("Empty all containers"))
+        {
+            EmptyAllContainers();
+        }
+        GUILayout.EndHorizontal();
+
         DrawDefaultInspector();
+    }
+
+    private void FillAllContainers()
+    {
+        foreach (var container in containers) container.Fill(container.MaxCapacity);
+    }
+
+    private void EmptyAllContainers()
+    {
+        foreach (var container in containers) container.Take(container.MaxCapacity);
     }
 }

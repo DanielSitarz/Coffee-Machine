@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using DanielSitarz.MyLog;
 using Machine.Enums;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Machine.Components
 {
     public class FavoriteCoffeeController : MonoBehaviour
     {
+        public bool debug = false;
+
         [SerializeField]
         private CoffeeMachine coffeeMachine;
         [SerializeField]
@@ -32,6 +34,8 @@ namespace Machine.Components
             var coffee = GetFavorite(currentIndex);
 
             coffeeMachine.SetCoffee(coffee);
+
+            MyLog.TryLog(this, $"Set favorite - i: {currentIndex}", debug);
         }
 
         public void SaveAsFavorite()
@@ -52,6 +56,8 @@ namespace Machine.Components
             customName = null;
 
             if (display != null) display.DisplayTimedMsg(DisplayMessage.SaveCoffeeAsFavorite, coffeeName);
+
+            MyLog.TryLog(this, $"Saved as favorite - {favCoffee.coffeeName}", debug);
         }
 
         public void SetCustomName(string newName)

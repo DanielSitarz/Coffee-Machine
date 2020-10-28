@@ -38,6 +38,7 @@ namespace Machine
             {DisplayMessage.SetCoffeeSize, "Coffee size: {0}"},
             {DisplayMessage.SetCoffeeStrength, "Coffee strength: {0}"},
             {DisplayMessage.CoffeeReady, "{0} coffee ready."},
+            {DisplayMessage.NoFavorite, "No favorite coffees to select."},
         };
 
         private Status currentStatus;

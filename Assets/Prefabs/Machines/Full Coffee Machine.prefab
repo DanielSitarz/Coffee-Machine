@@ -696,7 +696,7 @@ MonoBehaviour:
       draggable: 1
       expandable: 1
       multipleSelection: 1
-      isExpanded: 0
+      isExpanded: 1
       label:
         m_Text: Keys
         m_Image: {fileID: 0}
@@ -711,15 +711,16 @@ MonoBehaviour:
       elementNameOverride: 
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 0000000001000000020000000300000004000000
-    _keys: 0000000001000000020000000300000004000000
+    isExpanded: 1
+    _keyValues: 000000000100000002000000030000000400000005000000
+    _keys: 000000000100000002000000030000000400000005000000
     _values:
     - Saved {0} as favorite.
     - Selected {0}
     - 'Coffee size: {0}'
     - 'Coffee strength: {0}'
     - '{0} coffee ready.'
+    - No favorite coffees to select.
 --- !u!1 &2433261290240978020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1993,7 +1994,7 @@ GameObject:
   - component: {fileID: 6290084241465496217}
   - component: {fileID: 1922344121}
   m_Layer: 0
-  m_Name: Coffee Machine
+  m_Name: Full Coffee Machine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2136,6 +2137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 209abfd725cc78d41ae1a5b9d871c051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   coffeeMachine: {fileID: 5254204698062184924}
   display: {fileID: 8844148710152652160}
   favoriteCoffees: []
@@ -3335,7 +3337,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterLimit: 14
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []

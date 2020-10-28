@@ -7,5 +7,6 @@ namespace Machine.Enums
         SetCoffeeSize,
         SetCoffeeStrength,
         CoffeeReady,
+        NoFavorite
     }
 }

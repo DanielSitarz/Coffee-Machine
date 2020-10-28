@@ -15,7 +15,7 @@ namespace Machine.Components
         [SerializeField, Tooltip("Used to react to warnings. Not required.")]
         private SensorsListener sensorsListener;
 
-        [SerializeField, Tooltip("Handles status/warning events and other.")]
+        [SerializeField, Tooltip("Handles status/warning events and other. Not required.")]
         private Display display;
 
         // From my research it turns out that Coffee Strength is controlled by the flow rate of the water (or temperature).
@@ -55,10 +55,13 @@ namespace Machine.Components
 
         private bool coffeeSetFromOutside = false;
         private bool hasWarnings = false;
+        private string id;
 
         void Start()
         {
             currentCoffee = new Coffee();
+
+            if (display == null) display = new NullDisplay();
         }
 
         void OnDisable()
@@ -125,7 +128,8 @@ namespace Machine.Components
             if (!Operational) return;
             if (coffee == null)
             {
-                Debug.LogWarning("Trying to select null coffee.");
+                display.DisplayTimedMsg(DisplayMessage.NoFavorite);
+                MyLog.TryLog(this, $"Trying to set null coffee", debug);
                 return;
             }
 

@@ -1,9 +1,15 @@
 ﻿using System.Collections;
+using DanielSitarz.MyLog;
 using Machine.Enums;
 using UnityEngine;
 
 namespace Machine.Components
 {
+    ///<summary>
+    /// Basic version just takes from coffee beans container and water container. With the settings from CoffeeMakeModel.
+    /// Advanced version could take list of commands:
+    /// like: Pump water -> Grind coffee -> pump water -> pump milk.
+    ///</summary>
     public class BasicBrewModule : BrewModule
     {
         [SerializeField]
@@ -37,14 +43,14 @@ namespace Machine.Components
 
             SetStatus(Status.Idle);
 
-            Utils.DebugLog(this, $"Stopped brewing", debug);
+            MyLog.TryLog(this, $"Stopped brewing", debug);
         }
 
         private IEnumerator Brew(CoffeeMakeModel coffeeModel)
         {
-            Utils.DebugLog(this, $"Brewing...", debug);
-            Utils.DebugLog(this, $"{coffeeModel.waterFlowRate}", debug);
-            Utils.DebugLog(this, $"{coffeeModel.waterAmount}", debug);
+            MyLog.TryLog(this, $"Brewing...", debug);
+            MyLog.TryLog(this, $"{coffeeModel.waterFlowRate}", debug);
+            MyLog.TryLog(this, $"{coffeeModel.waterAmount}", debug);
 
             coffeeGrinder.StartProcessing(coffeeAmount);
 

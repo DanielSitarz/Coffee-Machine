@@ -187,6 +187,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &205258897 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 205996499600990847, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
+    type: 3}
+  m_PrefabInstance: {fileID: 6290084241608572190}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e88216004f7f73549bbc9f7c44a204c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &376185015
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,18 +323,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &928532184 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8844148710152652160, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6290084241608572190}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f377b496b90ab214a9b3b3a7c16a1fb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,99 +436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79633c07cc428e4ab81bd3d8191c556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultCoffee: {fileID: 11400000, guid: 5afb07349ea961240b3319549c011405, type: 2}
-  sensorsListener: {fileID: 0}
-  display: {fileID: 0}
-  coffeeAmountPerPower:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 0
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-      controlID: 0
-      elementRects: []
-      elementLabel:
-        m_Text: 
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      pressIndex: 0
-      dragging: 0
-      pressPosition: 0
-      dragPosition: 0
-      dragDirection: 0
-      dragDropControlID: 0
-      enablePages: 0
-      perPageCount: 0
-      currentPage: 0
-      pagesCount: 0
-      showPage: 0
-    reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 000000000100000002000000
-    _keys: 000000000100000002000000
-    _values: 080000000c00000010000000
-  waterAmountPerSize:
-    reorderableList:
-      canAdd: 1
-      canRemove: 1
-      draggable: 1
-      expandable: 1
-      multipleSelection: 1
-      isExpanded: 0
-      label:
-        m_Text: Keys
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      headerHeight: 18
-      footerHeight: 13
-      slideEasing: 0.15
-      verticalSpacing: 2
-      showDefaultBackground: 1
-      elementDisplayType: 0
-      elementNameProperty: 
-      elementNameOverride: 
-      elementIcon: {fileID: 0}
-      controlID: 0
-      elementRects: []
-      elementLabel:
-        m_Text: 
-        m_Image: {fileID: 0}
-        m_Tooltip: 
-      pressIndex: 0
-      dragging: 0
-      pressPosition: 0
-      dragPosition: 0
-      dragDirection: 0
-      dragDropControlID: 0
-      enablePages: 0
-      perPageCount: 0
-      currentPage: 0
-      pagesCount: 0
-      showPage: 0
-    reqReferences: {fileID: 0}
-    isExpanded: 0
-    _keyValues: 000000000100000002000000
-    _keys: 000000000100000002000000
-    _values: 5000000078000000a0000000
-  coffeePower: 2
-  coffeeSize: 1
-  oldStatus: 0
-  currentCoffee: {fileID: 0}
 --- !u!114 &1556490990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,26 +448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8217ef058f8865f44ae76a1da0be2d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
-  status: 0
-  coffeeGrinder: {fileID: 1562924980}
-  waterPump: {fileID: 1787825573}
-  OnTurnOn:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnTurnOff:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnStatusChange:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnBrewSuccess:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
 --- !u!4 &1556490991
 Transform:
   m_ObjectHideFlags: 0
@@ -805,39 +692,6 @@ MonoBehaviour:
   OnAmount01Change:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1922344120 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6290084241465496216, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6290084241608572190}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1922344121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922344120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 209abfd725cc78d41ae1a5b9d871c051, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coffeeMachine: {fileID: 1922344122}
-  display: {fileID: 928532184}
-  favoriteCoffees: []
---- !u!114 &1922344122 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5254204698062184924, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6290084241608572190}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922344120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9929bea4fbc07164e956420baa561a39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6290084241608572190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -845,14 +699,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6878017650864094, guid: 860f248244e1b9c4bb37d3bcec8a6e9d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1922344121}
-    - target: {fileID: 6878017650864094, guid: 860f248244e1b9c4bb37d3bcec8a6e9d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Next
-      objectReference: {fileID: 0}
     - target: {fileID: 446856566607912428, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -931,6 +777,11 @@ PrefabInstance:
     - target: {fileID: 3584761533201935618, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5254204698062184924, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
+        type: 3}
+      propertyPath: OnStatusChange.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5271687742463822500, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
@@ -1108,6 +959,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coffee Machine
       objectReference: {fileID: 0}
+    - target: {fileID: 6290084241465496217, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
+        type: 3}
+      propertyPath: OnStatusChange.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290084241465496217, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
+        type: 3}
+      propertyPath: OnStatusChange.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290084241465496217, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
+        type: 3}
+      propertyPath: OnStatusChange.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290084241465496217, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
+        type: 3}
+      propertyPath: OnStatusChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 205258897}
+    - target: {fileID: 6290084241465496217, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
+        type: 3}
+      propertyPath: OnStatusChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnStatus
+      objectReference: {fileID: 0}
+    - target: {fileID: 6290084241465496217, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
+        type: 3}
+      propertyPath: OnStatusChange.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6290084243090477651, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1127,16 +1008,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6416299966959523703, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1922344121}
-    - target: {fileID: 6416299966959523703, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SaveAsFavorite
       objectReference: {fileID: 0}
     - target: {fileID: 6694505120277718610, guid: 860f248244e1b9c4bb37d3bcec8a6e9d,
         type: 3}

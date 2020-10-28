@@ -629,7 +629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status: 0
   displayText: {fileID: 3732669030772540821}
-  timedMsgDuration: 2
+  timedMsgDuration: 3
   statusMessages:
     reorderableList:
       canAdd: 1
@@ -689,6 +689,37 @@ MonoBehaviour:
     - Refill coffee.
     - Empty drip tray.
     - Empty grounds.
+  messages:
+    reorderableList:
+      canAdd: 1
+      canRemove: 1
+      draggable: 1
+      expandable: 1
+      multipleSelection: 1
+      isExpanded: 0
+      label:
+        m_Text: Keys
+        m_Image: {fileID: 0}
+        m_Tooltip: 
+      headerHeight: 18
+      footerHeight: 13
+      slideEasing: 0.15
+      verticalSpacing: 2
+      showDefaultBackground: 1
+      elementDisplayType: 0
+      elementNameProperty: 
+      elementNameOverride: 
+      elementIcon: {fileID: 0}
+    reqReferences: {fileID: 0}
+    isExpanded: 0
+    _keyValues: 0000000001000000020000000300000004000000
+    _keys: 0000000001000000020000000300000004000000
+    _values:
+    - Saved {0} as favorite.
+    - Selected {0}
+    - 'Coffee size: {0}'
+    - 'Coffee strength: {0}'
+    - '{0} coffee ready.'
 --- !u!1 &2433261290240978020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,6 +1782,7 @@ GameObject:
   - component: {fileID: 6290084241465496214}
   - component: {fileID: 5254204698062184924}
   - component: {fileID: 6290084241465496217}
+  - component: {fileID: 1922344121}
   m_Layer: 0
   m_Name: Coffee Machine
   m_TagString: Untagged
@@ -1790,7 +1822,6 @@ MonoBehaviour:
   brewModule: {fileID: 6290084241465496217}
   sensorsListener: {fileID: 69192417349282526}
   display: {fileID: 8844148710152652160}
-  favoriteCoffee: {fileID: 0}
   strengthToFlowRate:
     reorderableList:
       canAdd: 1
@@ -1884,6 +1915,21 @@ MonoBehaviour:
       m_Calls: []
   coffeeGrinder: {fileID: 2600433848246200538}
   waterPump: {fileID: 8403001593816719645}
+--- !u!114 &1922344121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290084241465496216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 209abfd725cc78d41ae1a5b9d871c051, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coffeeMachine: {fileID: 5254204698062184924}
+  display: {fileID: 8844148710152652160}
+  favoriteCoffees: []
 --- !u!1 &6290084241738415090
 GameObject:
   m_ObjectHideFlags: 0
@@ -3077,11 +3123,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5254204698062184924}
+      objectReference: {fileID: 1922344121}
     - target: {fileID: 7066176024607411822, guid: eda025d0e22bd52429f3df814e6c5f93,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SaveSelectedCoffeeAsFavoriteCoffee
+      value: SaveAsFavorite
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eda025d0e22bd52429f3df814e6c5f93, type: 3}
@@ -3290,15 +3336,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f53fa61d21aec24280451455082785d, type: 3}
---- !u!1 &8019800451396420984 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4037143156853925429, guid: 4f53fa61d21aec24280451455082785d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6290084241815184205}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7149546607612071365 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3779246352701861512, guid: 4f53fa61d21aec24280451455082785d,
+    type: 3}
+  m_PrefabInstance: {fileID: 6290084241815184205}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8019800451396420984 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4037143156853925429, guid: 4f53fa61d21aec24280451455082785d,
     type: 3}
   m_PrefabInstance: {fileID: 6290084241815184205}
   m_PrefabAsset: {fileID: 0}
@@ -4185,11 +4231,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5254204698062184924}
+      objectReference: {fileID: 1922344121}
     - target: {fileID: 7066176024607411822, guid: eda025d0e22bd52429f3df814e6c5f93,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SelectFavoriteCoffee
+      value: Next
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eda025d0e22bd52429f3df814e6c5f93, type: 3}

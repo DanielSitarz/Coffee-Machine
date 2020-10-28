@@ -1,4 +1,4 @@
-﻿using Machine.Dictionaries;
+﻿using DanielSitarz.MyLog;
 using Machine.Enums;
 using Machine.Events;
 using UnityEngine;
@@ -18,7 +18,7 @@ namespace Machine.Components
 
         [HideInInspector]
         public UnityEvent OnBrewSuccess;
-        [HideInInspector]
+        [Space()]
         public StatusEvent OnStatusChange;
 
         private Coroutine brewingProcess;
@@ -30,7 +30,7 @@ namespace Machine.Components
         {
             SetStatus(Status.Idle);
 
-            Utils.DebugLog(this, "Turn on", debug);
+            MyLog.TryLog(this, "Turn on", debug);
         }
 
         public virtual void TurnOff()
@@ -39,7 +39,7 @@ namespace Machine.Components
 
             SetStatus(Status.Off);
 
-            Utils.DebugLog(this, "Turn off", debug);
+            MyLog.TryLog(this, "Turn off", debug);
         }
 
         protected virtual void SetStatus(Status newStatus)
@@ -47,7 +47,7 @@ namespace Machine.Components
             status = newStatus;
             OnStatusChange.Invoke(status);
 
-            Utils.DebugLog(this, $"Changed status - {newStatus}", debug);
+            MyLog.TryLog(this, $"Changed status - {newStatus}", debug);
         }
     }
 }

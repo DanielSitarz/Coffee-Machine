@@ -55,7 +55,6 @@ namespace Machine.Components
 
         private bool coffeeSetFromOutside = false;
         private bool hasWarnings = false;
-        private string id;
 
         void Start()
         {
@@ -236,7 +235,7 @@ namespace Machine.Components
 
         private void OnBrewSuccess()
         {
-            name = currentCoffee.coffeeName;
+            var name = currentCoffee.coffeeName;
 
             SetStatus(Status.Idle);
             display.DisplayTimedMsg(DisplayMessage.CoffeeReady, name);

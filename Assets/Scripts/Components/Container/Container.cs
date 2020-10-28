@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Machine.Components
 {
-    public abstract class Container : MonoBehaviour, IContainer
+    public abstract class Container : MonoBehaviour, IContainer, ISaveable
     {
         [SerializeField, Header("Capacity and Amount in grams."), Min(0)]
         protected float maxCapacity = 100;
@@ -21,5 +21,20 @@ namespace Machine.Components
         public abstract void Fill(float amountToAdd);
         public abstract float Take(float amountToTake);
         public abstract void SetAmount(float amount);
+
+        public void Save()
+        {
+            var state = new ContainerState() { currentAmount = currentAmount };
+            PlayerPrefs.SetString(GetInstanceID().ToString(), JsonUtility.ToJson(state));
+        }
+
+        public void Load()
+        {
+            Debug.Log("Loaded " + GetInstanceID().ToString());
+            var json = PlayerPrefs.GetString(GetInstanceID().ToString(), JsonUtility.ToJson(new ContainerState()));
+            ContainerState state = JsonUtility.FromJson<ContainerState>(json);
+
+            SetAmount(state.currentAmount);
+        }
     }
 }

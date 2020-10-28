@@ -38,12 +38,7 @@ namespace Machine.Components
         {
             if (!coffeeMachine.Operational) return;
 
-            string coffeeName = $"My favorite#{favoriteCoffees.Count + 1}";
-
-            if (customName != null)
-            {
-                coffeeName = customName;
-            }
+            string coffeeName = customName != null ? customName : $"My favorite#{favoriteCoffees.Count + 1}";
 
             Coffee favCoffee = new Coffee()
             {
@@ -56,10 +51,7 @@ namespace Machine.Components
 
             customName = null;
 
-            if (display != null)
-            {
-                display.DisplayTimedMsg(DisplayMessage.SaveCoffeeAsFavorite, coffeeName);
-            }
+            if (display != null) display.DisplayTimedMsg(DisplayMessage.SaveCoffeeAsFavorite, coffeeName);
         }
 
         public void SetCustomName(string newName)

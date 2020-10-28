@@ -18,7 +18,7 @@ namespace Machine
         private StatusStringDictionary statusMessages = new StatusStringDictionary() {
             { Status.Off, "" },
             { Status.Idle, "Ready to make damn good coffee." },
-            { Status.Busy, "Making coffee." }
+            { Status.Busy, "Making coffee..." }
         };
 
         [SerializeField]

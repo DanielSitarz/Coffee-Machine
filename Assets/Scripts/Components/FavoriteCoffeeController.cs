@@ -40,7 +40,7 @@ namespace Machine.Components
 
             Coffee favCoffee = new Coffee()
             {
-                name = coffeeName,
+                coffeeName = coffeeName,
                 size = coffeeMachine.CurrentCoffee.size,
                 strength = coffeeMachine.CurrentCoffee.strength
             };

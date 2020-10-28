@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Machine.Enums;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Machine.Components
 {
@@ -14,6 +15,7 @@ namespace Machine.Components
         private List<Coffee> favoriteCoffees = new List<Coffee>();
 
         private int currentIndex = 0;
+        private string customName = "";
 
         void Start()
         {
@@ -38,6 +40,11 @@ namespace Machine.Components
 
             string coffeeName = $"My favorite#{favoriteCoffees.Count + 1}";
 
+            if (customName != null)
+            {
+                coffeeName = customName;
+            }
+
             Coffee favCoffee = new Coffee()
             {
                 coffeeName = coffeeName,
@@ -47,19 +54,17 @@ namespace Machine.Components
 
             favoriteCoffees.Add(favCoffee);
 
+            customName = null;
+
             if (display != null)
             {
                 display.DisplayTimedMsg(DisplayMessage.SaveCoffeeAsFavorite, coffeeName);
             }
         }
 
-        private Coffee GetFavorite(int index)
+        public void SetCustomName(string newName)
         {
-            if (index > favoriteCoffees.Count - 1) return null;
-
-            var coffee = favoriteCoffees[index];
-
-            return coffee;
+            customName = newName;
         }
 
         public void Next()
@@ -72,6 +77,15 @@ namespace Machine.Components
         {
             currentIndex = Utils.ToggleNumber(currentIndex - 1, favoriteCoffees.Count - 1);
             SetFavorite();
+        }
+
+        private Coffee GetFavorite(int index)
+        {
+            if (index > favoriteCoffees.Count - 1) return null;
+
+            var coffee = favoriteCoffees[index];
+
+            return coffee;
         }
     }
 }

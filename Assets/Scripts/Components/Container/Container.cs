@@ -35,7 +35,8 @@ namespace Machine.Components
         {
             var UID = GetComponent<UniqueID>().uid;
             ContainerState state = SaveLoadSystem.Load<ContainerState>(baseId, UID);
-            Debug.Log(UID + "/" + name + "/" + state.currentAmount);
+            if (state == null) state = new ContainerState();
+
             SetAmount(state.currentAmount);
         }
     }

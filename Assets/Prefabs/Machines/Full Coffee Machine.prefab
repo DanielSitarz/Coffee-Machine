@@ -2958,7 +2958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38fae742bc235d44da228c4cf3414dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultFlowRate: 50
+  defaultFlowRate: 100
   ratio: 1
   from: {fileID: 0}
   to: {fileID: 6290084241217131174}

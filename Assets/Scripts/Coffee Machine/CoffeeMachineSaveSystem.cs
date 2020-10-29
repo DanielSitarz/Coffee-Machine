@@ -7,7 +7,7 @@ public class CoffeeMachineSaveSystem : MonoBehaviour
     UniqueID baseId;
     ISaveable[] saveables;
 
-    void OnEnable()
+    void Start()
     {
         baseId = GetComponent<UniqueID>();
         saveables = GetComponentsInChildren<ISaveable>();

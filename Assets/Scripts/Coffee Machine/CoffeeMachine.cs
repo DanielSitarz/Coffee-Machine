@@ -1,12 +1,15 @@
-﻿using DanielSitarz.MyLog;
+﻿using System;
+using System.Collections;
+using DanielSitarz.MyLog;
 using Machine.Dictionaries;
 using Machine.Enums;
 using Machine.Events;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Machine.Components
 {
-    public class CoffeeMachine : MonoBehaviour, ITurnable
+    public class CoffeeMachine : MonoBehaviour, ITurnable, ISaveable
     {
         public bool debug = false;
 
@@ -28,7 +31,6 @@ namespace Machine.Components
         };
         [SerializeField]
         private CoffeeStrength coffeeStrength = CoffeeStrength.Normal;
-        private int coffeeStrengthIndex;
 
         [SerializeField, Space()]
         private CoffeeSizeToWaterAmountDictionary sizeToWaterAmount = new CoffeeSizeToWaterAmountDictionary() {
@@ -38,7 +40,6 @@ namespace Machine.Components
         };
         [SerializeField]
         private CoffeeSize coffeeSize = CoffeeSize.Medium;
-        private int coffeeSizeIndex;
 
         public Coffee CurrentCoffee { get { return currentCoffee; } }
         private Coffee currentCoffee;
@@ -56,16 +57,18 @@ namespace Machine.Components
         private bool coffeeSetFromOutside = false;
         private bool hasWarnings = false;
 
-        void Start()
+        void OnEnable()
         {
-            currentCoffee = new Coffee();
-
             if (display == null) display = new NullDisplay();
         }
 
-        void OnDisable()
+        void OnValidate()
         {
-            TurnOff();
+            if (currentCoffee != null)
+            {
+                currentCoffee.strength = coffeeStrength;
+                currentCoffee.size = coffeeSize;
+            }
         }
 
         public void ToggleOnOff()
@@ -80,9 +83,6 @@ namespace Machine.Components
             MyLog.TryLog(this, "Turning on", debug);
 
             EnableEvents();
-
-            coffeeStrengthIndex = (int)coffeeStrength;
-            coffeeSizeIndex = (int)coffeeSize;
 
             if (sensorsListener != null) sensorsListener.TurnOn();
             brewModule.TurnOn();
@@ -143,50 +143,30 @@ namespace Machine.Components
         {
             if (!Operational) return;
 
-            coffeeStrengthIndex = Utils.ToggleNumber(coffeeStrengthIndex + 1, strengthToFlowRate.Count - 1);
-            SetCoffeeStrength(coffeeStrengthIndex);
-            coffeeSetFromOutside = false;
+            coffeeStrength = NextSetting<CoffeeStrength>(coffeeStrength, sizeToWaterAmount.Count - 1);
+            currentCoffee.strength = coffeeStrength;
 
-            MyLog.TryLog(this, $"Changed coffee strength to {coffeeStrengthIndex}", debug);
+            display.DisplayTimedMsg(DisplayMessage.SetCoffeeStrength, coffeeStrength.ToString());
         }
 
         public void ChangeCoffeeSize()
         {
             if (!Operational) return;
 
-            coffeeSizeIndex = Utils.ToggleNumber(coffeeSizeIndex + 1, sizeToWaterAmount.Count - 1);
-            SetCoffeeSize(coffeeSizeIndex);
+            coffeeSize = NextSetting<CoffeeSize>(coffeeSize, sizeToWaterAmount.Count - 1);
+            currentCoffee.size = coffeeSize;
+
+            display.DisplayTimedMsg(DisplayMessage.SetCoffeeSize, coffeeSize.ToString());
+        }
+
+        private T NextSetting<T>(T val, int max) where T : Enum
+        {
+            var nextIndex = Utils.ToggleNumber(((int)(object)val) + 1, max);
             coffeeSetFromOutside = false;
 
-            MyLog.TryLog(this, $"Changed coffee size to {coffeeSizeIndex}", debug);
-        }
+            MyLog.TryLog(this, $"Changed coffee size to {(T)(object)nextIndex}", debug);
 
-        public void SetCoffeeStrength(CoffeeStrength strength)
-        {
-            SetCoffeeStrength((int)strength);
-        }
-
-        private void SetCoffeeStrength(int index)
-        {
-            currentCoffee.strength = (CoffeeStrength)index;
-
-            display.DisplayTimedMsg(DisplayMessage.SetCoffeeStrength, currentCoffee.strength.ToString());
-
-            MyLog.TryLog(this, $"Set coffee strength - {currentCoffee.strength}", debug);
-        }
-
-        public void SetCoffeeSize(CoffeeSize size)
-        {
-            SetCoffeeSize((int)size);
-        }
-
-        private void SetCoffeeSize(int index)
-        {
-            currentCoffee.size = (CoffeeSize)index;
-
-            display.DisplayTimedMsg(DisplayMessage.SetCoffeeSize, currentCoffee.size.ToString());
-
-            MyLog.TryLog(this, $"Set coffee size - {currentCoffee.size}", debug);
+            return (T)(object)nextIndex;
         }
 
         private CoffeeMakeModel ConstructCoffeeMakeModel(Coffee currentCoffee)
@@ -251,7 +231,7 @@ namespace Machine.Components
 
             OnStatusChange.Invoke(status);
 
-            display.DisplayStatus(status, currentCoffee.coffeeName);
+            display.DisplayStatus(status);
 
             MyLog.TryLog(this, $"Changed status - {newStatus}", debug);
         }
@@ -268,6 +248,41 @@ namespace Machine.Components
         private void SetCurrentCoffeeName()
         {
             if (!coffeeSetFromOutside) currentCoffee.coffeeName = $"{currentCoffee.size}&{currentCoffee.strength}";
+        }
+
+        public void Save(string baseId)
+        {
+            CoffeeMachineState coffeeMachineState = new CoffeeMachineState()
+            {
+                status = status,
+                currentCoffee = currentCoffee,
+                coffeeSetFromOutside = coffeeSetFromOutside
+            };
+
+            var UID = GetComponent<UniqueID>().uid;
+            SaveLoadSystem.Save<CoffeeMachineState>(coffeeMachineState, UID, "");
+
+
+            MyLog.TryLog(this, $"Saved", debug);
+            MyLog.TryLog(this, JsonConvert.SerializeObject(coffeeMachineState), debug);
+        }
+
+        public void Load(string baseId)
+        {
+            var UID = GetComponent<UniqueID>().uid;
+            CoffeeMachineState state = SaveLoadSystem.Load<CoffeeMachineState>(UID, "");
+            if (state == null) state = new CoffeeMachineState();
+
+            currentCoffee = state.currentCoffee;
+            coffeeSetFromOutside = state.coffeeSetFromOutside;
+
+            if (state.status == Status.Idle || state.status == Status.Busy)
+            {
+                TurnOn();
+            }
+
+            MyLog.TryLog(this, $"Loaded", debug);
+            MyLog.TryLog(this, JsonConvert.SerializeObject(state), debug);
         }
     }
 }

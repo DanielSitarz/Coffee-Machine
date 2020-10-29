@@ -1,5 +1,5 @@
 [System.Serializable]
-public class ContainerState
+public struct ContainerState
 {
-    public float currentAmount = 0;
+    public float currentAmount;
 }

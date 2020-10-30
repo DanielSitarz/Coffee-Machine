@@ -1,6 +1,8 @@
 # Coffee Machine
 
-This repository contains full project of my Coffee Machine implementation made in Unity.
+![Coffee Machine UI](Assets/Images/machine.jpg "Coffee Machine UI")
+
+This repository contains full project of my Coffee Machine implementation made in Unity 2019.4.12f1
 
 ## What it can do?
 Like any Coffee Machine it can brew your favorite coffee in matter of seconds.

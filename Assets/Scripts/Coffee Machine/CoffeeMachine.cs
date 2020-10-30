@@ -30,14 +30,14 @@ namespace Machine.Components
 
         // From my research it turns out that Coffee Strength is controlled by the flow rate of the water (or temperature).
         // The slower water goes through coffee, the stronger coffee is.
-        [SerializeField, Header("Defines how fast water goes through coffee in ml/s."), Space()]
+        [SerializeField, Header("Defines how fast (ml/s) water goes through coffee."), Space()]
         private CoffeeStrengthToFlowRateDictionary strengthToFlowRate = new CoffeeStrengthToFlowRateDictionary() {
             {CoffeeStrength.Weak, 120.0f},
             {CoffeeStrength.Normal, 100.0f},
             {CoffeeStrength.Strong, 80.0f}
         };
 
-        [SerializeField, Header("Defines how much water will be used in ml.")]
+        [SerializeField, Header("Defines how much water (ml) will be used")]
         private CoffeeSizeToWaterAmountDictionary sizeToWaterAmount = new CoffeeSizeToWaterAmountDictionary() {
             {CoffeeSize.Small, 40},
             {CoffeeSize.Medium, 80},
@@ -62,7 +62,8 @@ namespace Machine.Components
 
         void OnEnable()
         {
-            if (display == null) display = new NoopDisplay();
+            if (currentCoffee == null) currentCoffee = new Coffee();
+            if (display == null) display = gameObject.AddComponent<NoopDisplay>() as NoopDisplay;
         }
 
         void OnValidate()
@@ -223,7 +224,7 @@ namespace Machine.Components
             SetStatus(Status.Idle);
             display.DisplayTimedMsg(DisplayMessage.CoffeeReady, name);
 
-            MyLog.TryLog(this, $"Brew succeeded.", debug);
+            MyLog.TryLog(this, $"{name} brew succeeded.", debug);
         }
 
         #endregion

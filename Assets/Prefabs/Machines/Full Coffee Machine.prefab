@@ -2075,6 +2075,8 @@ MonoBehaviour:
   brewModule: {fileID: 6290084241465496217}
   sensorsListener: {fileID: 69192417349282526}
   display: {fileID: 8844148710152652160}
+  coffeeSize: 2
+  coffeeStrength: 1
   strengthToFlowRate:
     reorderableList:
       canAdd: 1
@@ -2104,7 +2106,6 @@ MonoBehaviour:
     - 100
     - 60
     - 30
-  coffeeStrength: 1
   sizeToWaterAmount:
     reorderableList:
       canAdd: 1
@@ -2131,7 +2132,6 @@ MonoBehaviour:
     _keyValues: 000000000100000002000000
     _keys: 000000000100000002000000
     _values: 2800000064000000b4000000
-  coffeeSize: 2
   OnStatusChange:
     m_PersistentCalls:
       m_Calls: []

@@ -12,7 +12,7 @@ namespace Machine.Components
     public abstract class Container : MonoBehaviour, IContainer, ISaveable
     {
         [SerializeField, Header("Capacity and Amount in any units."), Min(0)]
-        protected float maxCapacity = 100;
+        protected float maxCapacity = 1000.0f;
 
         [SerializeField, Min(0)]
         protected float currentAmount = 0;

@@ -13,7 +13,7 @@ namespace Machine.Components
     public class Supplier : MonoBehaviour
     {
         [SerializeField, Tooltip("How much units are transferred in 1 second.")]
-        private float defaultFlowRate = 10.0f;
+        private float defaultFlowRate = 100.0f;
 
         [Tooltip("How much units are transferred? E.g. 0.5 means that half will land in second container. 2.0 will double it.")]
         public float ratio = 1.0f;

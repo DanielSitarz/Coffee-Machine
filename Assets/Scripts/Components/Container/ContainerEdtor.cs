@@ -2,28 +2,31 @@ using Machine.Components;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(Container), true)]
-[CanEditMultipleObjects]
-public class ContainerEditor : Editor
+namespace Machine
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(Container), true)]
+    [CanEditMultipleObjects]
+    public class ContainerEditor : Editor
     {
-        Container container = (Container)target;
-
-        GUILayout.BeginHorizontal("buttons");
-        if (GUILayout.Button("Fill Max"))
+        public override void OnInspectorGUI()
         {
-            container.Fill(container.MaxCapacity);
-            EditorUtility.SetDirty(target);
-        }
+            Container container = (Container)target;
 
-        if (GUILayout.Button("Empty"))
-        {
-            container.SetAmount(0);
-            EditorUtility.SetDirty(target);
-        }
-        GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal("buttons");
+            if (GUILayout.Button("Fill Max"))
+            {
+                container.Fill(container.MaxCapacity);
+                EditorUtility.SetDirty(target);
+            }
 
-        DrawDefaultInspector();
+            if (GUILayout.Button("Empty"))
+            {
+                container.SetAmount(0);
+                EditorUtility.SetDirty(target);
+            }
+            GUILayout.EndHorizontal();
+
+            DrawDefaultInspector();
+        }
     }
 }

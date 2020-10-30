@@ -3,27 +3,31 @@ using UnityEngine;
 
 namespace Machine.Components
 {
+    // TODO: Add StartProcessing until empty.
+    // TODO: Multiple take and fill containers.
     // TODO: Maybe coroutine instead of update?
-    // TODO: Add StartProcessing until empty?
 
+    ///<summary>
+    /// Transfers stuff from one container to another. Can also only take if only first container is set, or only fill if only second container is set.
+    ///</summary>
     public class Supplier : MonoBehaviour
     {
-        [Header("Transfers stuff from one container to another. Can also only take or fill."), Tooltip("How much units are transferred in 1 second.")]
-        [SerializeField]
+        [SerializeField, Tooltip("How much units are transferred in 1 second.")]
         private float defaultFlowRate = 10.0f;
-        private float currentFlowRate;
 
-        [Tooltip("How much units are transferred? E.g. 0.5 means that half will land in second container. 2.0 will double.")]
+        [Tooltip("How much units are transferred? E.g. 0.5 means that half will land in second container. 2.0 will double it.")]
         public float ratio = 1.0f;
 
+        [Header("It will just take if only first container is set, or just fill if only second container is set.")]
         [SerializeField, Tooltip("If left null it will only fill the second container.")]
         private Container from;
         [SerializeField, Tooltip("If left null it will only take out from the first container.")]
         private Container to;
 
-        private float amountToProcessLeft = 0.0f;
-
         public Status Status { get { return amountToProcessLeft > 0 ? Status.Busy : Status.Idle; } }
+
+        private float amountToProcessLeft = 0.0f;
+        private float currentFlowRate;
 
         void Update()
         {

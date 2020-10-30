@@ -1,5 +1,10 @@
-[System.Serializable]
-public class ContainerState
+using System;
+
+namespace Machine.State
 {
-    public float currentAmount = 0;
+    [Serializable]
+    public class ContainerState
+    {
+        public float currentAmount = 0;
+    }
 }

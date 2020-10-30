@@ -1,35 +1,38 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CanEditMultipleObjects]
-[CustomEditor(typeof(UniqueID))]
-public class UniqueIDEditor : Editor
+namespace Machine
 {
-    public override void OnInspectorGUI()
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(UniqueID))]
+    public class UniqueIDEditor : Editor
     {
-        if (GUILayout.Button("Regenerate ID"))
+        public override void OnInspectorGUI()
         {
-            if (EditorUtility.DisplayDialog(
-                "Regenerate ID?",
-                $"Are you sure to regenerate {targets.Length} IDs? Any saved data for this ids will be lost.",
-                "Yes", "No"))
+            if (GUILayout.Button("Regenerate ID"))
             {
-                foreach (var ob in targets)
+                if (EditorUtility.DisplayDialog(
+                    "Regenerate ID?",
+                    $"Are you sure to regenerate {targets.Length} IDs? Any saved data for this ids will be lost.",
+                    "Yes", "No"))
                 {
-                    UniqueID uniqueID = (UniqueID)ob;
-                    RegenerateID(uniqueID);
+                    foreach (var ob in targets)
+                    {
+                        UniqueID uniqueID = (UniqueID)ob;
+                        RegenerateID(uniqueID);
+                    }
                 }
             }
+
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("uid"));
+            EditorGUI.EndDisabledGroup();
         }
 
-        EditorGUI.BeginDisabledGroup(true);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("uid"));
-        EditorGUI.EndDisabledGroup();
-    }
-
-    private void RegenerateID(UniqueID uniqueID)
-    {
-        uniqueID.uid = UniqueID.GetUID();
-        EditorUtility.SetDirty(uniqueID);
+        private void RegenerateID(UniqueID uniqueID)
+        {
+            uniqueID.uid = UniqueID.GetUID();
+            EditorUtility.SetDirty(uniqueID);
+        }
     }
 }

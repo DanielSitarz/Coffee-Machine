@@ -4,9 +4,12 @@ using RotaryHeart.Lib.SerializableDictionary;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Machine
+namespace Machine.Components
 {
     // TODO: I18n, propably texts should be moved to one localization file.
+    ///<summary>
+    /// Displays warnings/statuses/messages in form of text.
+    ///</summary>
     public class TextDisplay : Display
     {
         [SerializeField]

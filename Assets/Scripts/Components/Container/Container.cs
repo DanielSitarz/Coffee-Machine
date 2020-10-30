@@ -1,12 +1,17 @@
 ﻿using Machine.Events;
+using Machine.State;
 using UnityEngine;
 
 namespace Machine.Components
 {
+    ///<summary>
+    /// Holds and gives stuff. Keeps track of current availble amount. Defines upper limit.
+    /// Reports with events any change of current amount. Can save/load its state.
+    ///</summary>
     [RequireComponent(typeof(UniqueID))]
     public abstract class Container : MonoBehaviour, IContainer, ISaveable
     {
-        [SerializeField, Header("Capacity and Amount in grams."), Min(0)]
+        [SerializeField, Header("Capacity and Amount in any units."), Min(0)]
         protected float maxCapacity = 100;
 
         [SerializeField, Min(0)]

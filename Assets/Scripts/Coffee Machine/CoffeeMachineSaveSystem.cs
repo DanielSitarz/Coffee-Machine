@@ -2,6 +2,9 @@
 
 namespace Machine
 {
+    ///<summary>
+    /// Iterates through ISaveables and make them load. Saves on disable.
+    ///</summary>
     [RequireComponent(typeof(UniqueID))]
     public class CoffeeMachineSaveSystem : MonoBehaviour
     {

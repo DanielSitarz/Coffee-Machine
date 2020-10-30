@@ -1,5 +1,3 @@
-using Machine.Events;
-
 namespace Machine.Components
 {
     public interface IContainer

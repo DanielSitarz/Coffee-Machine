@@ -3,6 +3,9 @@ using Machine.Events;
 
 namespace Machine.Components
 {
+    ///<summary>
+    /// Reacts to the Container's value changed event.
+    ///</summary>
     [ExecuteInEditMode]
     public class ContainerIndicator : MonoBehaviour
     {

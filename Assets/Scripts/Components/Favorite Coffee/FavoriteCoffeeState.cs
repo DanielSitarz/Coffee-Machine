@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Machine
+namespace Machine.State
 {
     [Serializable]
     public class FavoriteCoffeeState

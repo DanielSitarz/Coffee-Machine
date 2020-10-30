@@ -3,11 +3,15 @@ using DanielSitarz.MyLog;
 using Machine.Dictionaries;
 using Machine.Enums;
 using Machine.Events;
+using Machine.State;
 using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Machine.Components
 {
+    ///<summary>
+    /// Main component. Defines what coffees we can make and what are the current settings. Can save/load its state.
+    ///</summary>
     public class CoffeeMachine : MonoBehaviour, ITurnable, ISaveable
     {
         public bool debug = false;
@@ -16,29 +20,29 @@ namespace Machine.Components
         private BrewModule brewModule;
         [SerializeField, Tooltip("Used to react to warnings. Not required.")]
         private SensorsListener sensorsListener;
-
         [SerializeField, Tooltip("Handles status/warning events and other. Not required.")]
         private Display display;
 
+        [SerializeField, Space()]
+        private CoffeeSize coffeeSize = CoffeeSize.Medium;
+        [SerializeField]
+        private CoffeeStrength coffeeStrength = CoffeeStrength.Normal;
+
         // From my research it turns out that Coffee Strength is controlled by the flow rate of the water (or temperature).
         // The slower water goes through coffee, the stronger coffee is.
-        [SerializeField, Space()]
+        [SerializeField, Header("Defines how fast water goes through coffee in ml/s."), Space()]
         private CoffeeStrengthToFlowRateDictionary strengthToFlowRate = new CoffeeStrengthToFlowRateDictionary() {
             {CoffeeStrength.Weak, 120.0f},
             {CoffeeStrength.Normal, 100.0f},
             {CoffeeStrength.Strong, 80.0f}
         };
-        [SerializeField]
-        private CoffeeStrength coffeeStrength = CoffeeStrength.Normal;
 
-        [SerializeField, Space()]
+        [SerializeField, Header("Defines how much water will be used in ml.")]
         private CoffeeSizeToWaterAmountDictionary sizeToWaterAmount = new CoffeeSizeToWaterAmountDictionary() {
             {CoffeeSize.Small, 40},
             {CoffeeSize.Medium, 80},
             {CoffeeSize.Big, 120}
         };
-        [SerializeField]
-        private CoffeeSize coffeeSize = CoffeeSize.Medium;
 
         public Coffee CurrentCoffee { get { return currentCoffee; } }
         private Coffee currentCoffee;
@@ -58,7 +62,7 @@ namespace Machine.Components
 
         void OnEnable()
         {
-            if (display == null) display = new NullDisplay();
+            if (display == null) display = new NoopDisplay();
         }
 
         void OnValidate()
@@ -126,7 +130,6 @@ namespace Machine.Components
             if (!Operational) return;
             if (coffee == null)
             {
-                display.DisplayTimedMsg(DisplayMessage.NoFavorite);
                 MyLog.TryLog(this, $"Trying to set null coffee", debug);
                 return;
             }
@@ -138,6 +141,7 @@ namespace Machine.Components
             display.DisplayTimedMsg(DisplayMessage.SelectedCoffee, coffee.coffeeName);
         }
 
+        // TODO: What if we have 10 coffee settings? Also maybe move it into separate class like ControlPanel.
         public void ChangeCoffeeStrength()
         {
             if (!Operational) return;
@@ -229,7 +233,6 @@ namespace Machine.Components
             status = newStatus;
 
             OnStatusChange.Invoke(status);
-
             display.DisplayStatus(status, additionalData);
 
             MyLog.TryLog(this, $"Changed status - {newStatus}", debug);
@@ -238,7 +241,6 @@ namespace Machine.Components
         private void ClearWarnings()
         {
             hasWarnings = false;
-
             display.ClearWarning();
 
             MyLog.TryLog(this, $"Cleared warnings", debug);

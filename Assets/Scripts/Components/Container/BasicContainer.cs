@@ -2,6 +2,9 @@
 
 namespace Machine.Components
 {
+    ///<summary>
+    /// Basic Fill and Take operations.
+    ///</summary>
     [ExecuteInEditMode]
     public class BasicContainer : Container
     {

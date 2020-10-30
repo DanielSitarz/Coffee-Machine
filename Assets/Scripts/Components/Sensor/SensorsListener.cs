@@ -7,13 +7,17 @@ using UnityEngine;
 namespace Machine.Components
 {
     // TODO: Change from pooling sensors every x seconds to be event driven.
+
+    ///<summary>
+    /// Check all attached sensors x times per second and listens for their warnings.
+    ///</summary>
     public class SensorsListener : MonoBehaviour, ITurnable
     {
         [Header("Times per second.")]
         public float checkFrequency = 10;
 
-        [Header("The importance of the sensors depends on the order.")]
-        [SerializeField] private ContainerSensor[] sensors;
+        [SerializeField, Header("The importance of the sensors depends on the order.")]
+        private ContainerSensor[] sensors;
 
         public bool HasWarnings { get { return warnings.Count > 0; } }
 

@@ -1,5 +1,8 @@
 ﻿namespace Machine
 {
+    ///<summary>
+    /// Defines the values used to make coffee by BrewModule.
+    ///</summary>
     public struct CoffeeMakeModel
     {
         ///<summary>Flow rate in ml/s.</summary>

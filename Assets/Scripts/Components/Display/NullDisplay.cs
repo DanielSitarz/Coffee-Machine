@@ -1,8 +1,11 @@
 ﻿using Machine.Enums;
 
-namespace Machine
+namespace Machine.Components
 {
-    public class NullDisplay : Display
+    ///<summary>
+    /// Does nothing. CoffeeMachine's display is not required, so this one is used if we don't set any other.
+    ///</summary>
+    public class NoopDisplay : Display
     {
         public override void ClearTimedMsg()
         {

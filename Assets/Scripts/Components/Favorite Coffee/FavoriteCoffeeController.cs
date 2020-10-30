@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using DanielSitarz.MyLog;
 using Machine.Enums;
+using Machine.State;
 using UnityEngine;
 
 namespace Machine.Components
 {
+    ///<summary>
+    /// Holds list of coffees. Handles adding new favorite coffee, setting it as current in CoffeeMachine and toggling between saved ones. Can save/load its state. 
+    ///</summary>
     public class FavoriteCoffeeController : MonoBehaviour, ISaveable
     {
         public bool debug = false;
@@ -17,7 +21,7 @@ namespace Machine.Components
         private List<Coffee> favoriteCoffees = new List<Coffee>();
 
         private int currentIndex = 0;
-        private string customName = "";
+        private string customName = ""; // propably from InputField somewhere.
 
         void Start()
         {
@@ -32,6 +36,12 @@ namespace Machine.Components
             if (!coffeeMachine.Operational) return;
 
             var coffee = GetFavorite(currentIndex);
+
+            if (coffee == null)
+            {
+                display.DisplayTimedMsg(DisplayMessage.NoFavorite);
+                return;
+            }
 
             coffeeMachine.SetCoffee(coffee);
 

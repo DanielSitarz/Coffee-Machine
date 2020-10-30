@@ -1,8 +1,11 @@
 ﻿using Machine.Enums;
 using UnityEngine;
 
-namespace Machine
+namespace Machine.Components
 {
+    ///<summary>
+    /// Handles diplaying various warnings/statuses/messages.
+    ///</summary>
     public abstract class Display : MonoBehaviour, ITurnable
     {
         public Status status;

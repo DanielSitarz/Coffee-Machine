@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Machine.Components
 {
+    ///<summary>
+    /// Observes Container and react to it's current state. Raises events based on set thresholds.
+    ///</summary>
     public class ContainerSensor : MonoBehaviour
     {
         public Container observedContainer;

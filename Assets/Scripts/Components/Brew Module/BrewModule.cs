@@ -6,6 +6,9 @@ using UnityEngine.Events;
 
 namespace Machine.Components
 {
+    ///<summary>
+    /// Brew Module handles brewing coffees from the CoffeeMakeModels. Raports brew success and status change.
+    ///</summary>
     public abstract class BrewModule : MonoBehaviour, ITurnable
     {
         public bool debug;

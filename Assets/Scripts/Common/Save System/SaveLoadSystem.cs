@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Machine
 {
+    ///<summary>
+    /// Saves or loads serializable objects. Now using binary JSON format.
+    ///</summary>
     public static class SaveLoadSystem
     {
         public static void Save<T>(T objToSave, string baseId, string objId)

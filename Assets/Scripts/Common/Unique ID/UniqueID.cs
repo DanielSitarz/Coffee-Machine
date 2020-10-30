@@ -1,12 +1,18 @@
 ﻿using System;
 using UnityEngine;
 
-public class UniqueID : MonoBehaviour
+namespace Machine
 {
-    public string uid = GetUID();
-
-    public static string GetUID()
+    ///<summary>
+    /// Holds unique ID. Useful for Save/Load system.
+    ///</summary>
+    public class UniqueID : MonoBehaviour
     {
-        return Guid.NewGuid().ToString();
+        public string uid = GetUID();
+
+        public static string GetUID()
+        {
+            return Guid.NewGuid().ToString();
+        }
     }
 }

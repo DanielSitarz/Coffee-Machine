@@ -1,4 +1,7 @@
+using System;
+using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using UnityEngine;
 
 namespace Machine
@@ -7,15 +10,32 @@ namespace Machine
     {
         public static void Save<T>(T objToSave, string baseId, string objId)
         {
-            PlayerPrefs.SetString($"{baseId}/{objId}", JsonConvert.SerializeObject(objToSave));
+            MemoryStream ms = new MemoryStream();
+            using (BsonWriter writer = new BsonWriter(ms))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(writer, objToSave);
+            }
+            string data = Convert.ToBase64String(ms.ToArray());
+
+            PlayerPrefs.SetString($"{baseId}/{objId}", data);
         }
 
         public static T Load<T>(string baseId, string objId)
         {
-            var json = PlayerPrefs.GetString($"{baseId}/{objId}", "{}");
-            T state = JsonConvert.DeserializeObject<T>(json);
+            var bson = PlayerPrefs.GetString($"{baseId}/{objId}", "e30=");
 
-            if (state == null) state = default(T);
+            byte[] data = Convert.FromBase64String(bson);
+
+            T state = default(T);
+
+            MemoryStream ms = new MemoryStream(data);
+            using (BsonReader reader = new BsonReader(ms))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+
+                state = serializer.Deserialize<T>(reader);
+            }
 
             return state;
         }

@@ -1,28 +1,31 @@
-﻿using Machine;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(UniqueID))]
-public class CoffeeMachineSaveSystem : MonoBehaviour
+namespace Machine
 {
-    UniqueID baseId;
-    ISaveable[] saveables;
-
-    void Start()
+    [RequireComponent(typeof(UniqueID))]
+    public class CoffeeMachineSaveSystem : MonoBehaviour
     {
-        baseId = GetComponent<UniqueID>();
-        saveables = GetComponentsInChildren<ISaveable>();
+        UniqueID baseId;
+        ISaveable[] saveables;
 
-        foreach (var saveable in saveables)
+        void Start()
         {
-            saveable.Load(baseId.uid);
+            baseId = GetComponent<UniqueID>();
+            saveables = GetComponentsInChildren<ISaveable>();
+
+            foreach (var saveable in saveables)
+            {
+                saveable.Load(baseId.uid);
+            }
         }
-    }
 
-    void OnDisable()
-    {
-        foreach (var saveable in saveables)
+        void OnDisable()
         {
-            saveable.Save(baseId.uid);
+            foreach (var saveable in saveables)
+            {
+                saveable.Save(baseId.uid);
+            }
         }
     }
 }
+

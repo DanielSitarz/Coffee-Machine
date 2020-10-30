@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Machine.Components
 {
-    public class FavoriteCoffeeController : MonoBehaviour
+    public class FavoriteCoffeeController : MonoBehaviour, ISaveable
     {
         public bool debug = false;
 
@@ -84,6 +84,26 @@ namespace Machine.Components
             var coffee = favoriteCoffees[index];
 
             return coffee;
+        }
+
+        public void Save(string baseId)
+        {
+            FavoriteCoffeeState state = new FavoriteCoffeeState()
+            {
+                favoriteCoffees = favoriteCoffees,
+                currentIndex = currentIndex
+            };
+
+            SaveLoadSystem.Save<FavoriteCoffeeState>(state, baseId, "FavoriteCoffeeController");
+        }
+
+        public void Load(string baseId)
+        {
+            var state = SaveLoadSystem.Load<FavoriteCoffeeState>(baseId, "FavoriteCoffeeController");
+            if (state == null) state = new FavoriteCoffeeState();
+
+            favoriteCoffees = state.favoriteCoffees;
+            currentIndex = state.currentIndex;
         }
     }
 }

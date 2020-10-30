@@ -6,60 +6,55 @@ using UnityEngine;
 [CanEditMultipleObjects]
 public class CoffeeMachineEditor : Editor
 {
-    CoffeeMachine machine;
     Container[] containers;
-
-    void OnEnable()
-    {
-        CoffeeMachine machine = (CoffeeMachine)target;
-        containers = machine.GetComponentsInChildren<Container>();
-    }
 
     public override void OnInspectorGUI()
     {
         GUILayout.BeginHorizontal("controls");
         if (GUILayout.Button("On/Off"))
         {
-            machine.ToggleOnOff();
+            foreach (CoffeeMachine machine in targets) machine.ToggleOnOff();
         }
         if (GUILayout.Button("Brew Coffee"))
         {
-            machine.Brew();
+            foreach (CoffeeMachine machine in targets) machine.Brew();
         }
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal("settings");
         if (GUILayout.Button("Change Strength"))
         {
-            machine.ChangeCoffeeStrength();
+            foreach (CoffeeMachine machine in targets) machine.ChangeCoffeeStrength();
         }
         if (GUILayout.Button("Change Size"))
         {
-            machine.ChangeCoffeeSize();
+            foreach (CoffeeMachine machine in targets) machine.ChangeCoffeeSize();
         }
         GUILayout.EndHorizontal();
 
         GUILayout.BeginHorizontal("containers");
         if (GUILayout.Button("Fill all containers"))
         {
-            FillAllContainers();
+            foreach (CoffeeMachine machine in targets) FillAllContainers(machine);
         }
         if (GUILayout.Button("Empty all containers"))
         {
-            EmptyAllContainers();
+            foreach (CoffeeMachine machine in targets) EmptyAllContainers(machine);
         }
         GUILayout.EndHorizontal();
 
         DrawDefaultInspector();
     }
 
-    private void FillAllContainers()
+    private void FillAllContainers(CoffeeMachine cm)
     {
+        var containers = cm.GetComponentsInChildren<Container>();
         foreach (var container in containers) container.Fill(container.MaxCapacity);
     }
 
-    private void EmptyAllContainers()
+    private void EmptyAllContainers(CoffeeMachine cm)
     {
+        var containers = cm.GetComponentsInChildren<Container>();
         foreach (var container in containers) container.Take(container.MaxCapacity);
     }
 }

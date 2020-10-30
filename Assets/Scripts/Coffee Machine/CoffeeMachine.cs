@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using DanielSitarz.MyLog;
 using Machine.Dictionaries;
 using Machine.Enums;
@@ -115,7 +114,7 @@ namespace Machine.Components
             }
 
             SetCurrentCoffeeName();
-            SetStatus(Status.Busy);
+            SetStatus(Status.Busy, currentCoffee.coffeeName);
             display.ClearTimedMsg();
 
             CoffeeMakeModel model = ConstructCoffeeMakeModel(currentCoffee);
@@ -225,13 +224,13 @@ namespace Machine.Components
 
         #endregion
 
-        private void SetStatus(Status newStatus)
+        private void SetStatus(Status newStatus, string additionalData = null)
         {
             status = newStatus;
 
             OnStatusChange.Invoke(status);
 
-            display.DisplayStatus(status);
+            display.DisplayStatus(status, additionalData);
 
             MyLog.TryLog(this, $"Changed status - {newStatus}", debug);
         }
@@ -256,12 +255,12 @@ namespace Machine.Components
             {
                 status = status,
                 currentCoffee = currentCoffee,
-                coffeeSetFromOutside = coffeeSetFromOutside
+                coffeeSetFromOutside = coffeeSetFromOutside,
+                coffeeSize = coffeeSize,
+                coffeeStrength = coffeeStrength
             };
 
-            var UID = GetComponent<UniqueID>().uid;
-            SaveLoadSystem.Save<CoffeeMachineState>(coffeeMachineState, UID, "");
-
+            SaveLoadSystem.Save<CoffeeMachineState>(coffeeMachineState, baseId, "CoffeeMachine");
 
             MyLog.TryLog(this, $"Saved", debug);
             MyLog.TryLog(this, JsonConvert.SerializeObject(coffeeMachineState), debug);
@@ -269,12 +268,13 @@ namespace Machine.Components
 
         public void Load(string baseId)
         {
-            var UID = GetComponent<UniqueID>().uid;
-            CoffeeMachineState state = SaveLoadSystem.Load<CoffeeMachineState>(UID, "");
+            CoffeeMachineState state = SaveLoadSystem.Load<CoffeeMachineState>(baseId, "CoffeeMachine");
             if (state == null) state = new CoffeeMachineState();
 
             currentCoffee = state.currentCoffee;
             coffeeSetFromOutside = state.coffeeSetFromOutside;
+            coffeeStrength = state.coffeeStrength;
+            coffeeSize = state.coffeeSize;
 
             if (state.status == Status.Idle || state.status == Status.Busy)
             {
